@@ -1,6 +1,6 @@
 @mixin handleScroll {
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 @mixin flex {
@@ -25,6 +25,7 @@
 body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 1.6rem;
+  color: rgb(27, 27, 27);
 }
 
 .App {
@@ -32,14 +33,11 @@ body {
   padding: 1rem 4rem;
   background-color: #f0f8ff;
   max-width: 190rem;
-  // check for over flow ...
-  height: 110vh;
+  height: 99vh;
   display: grid;
   grid-template-columns: 3fr 7fr;
   grid-template-rows: 10rem 1fr 5rem;
   gap: 0.3rem;
-  .side-bar,
-  .cv-container,
   .footer {
     box-shadow: 0 0 1rem 0.1rem rgb(173, 125, 125);
   }
@@ -111,6 +109,7 @@ body {
 .side-bar {
   grid-row: span 2;
   padding: 4rem 2rem;
+  box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.09);
 
   @include flex();
   flex-direction: column;
@@ -177,6 +176,48 @@ body {
 }
 
 .cv-container {
+  @include flex();
+  flex-direction: column;
+  justify-content: start;
+  gap: 3rem;
+
+  .top {
+    width: 90%;
+    @include flex();
+    justify-content: space-between;
+
+    p {
+      font-size: 2.4rem;
+      font-weight: 500;
+      letter-spacing: 0.2rem;
+      text-transform: capitalize;
+    }
+
+    div {
+      font-size: 1.9rem;
+
+      @include flex();
+      gap: 2.5rem;
+
+      select,
+      input {
+        margin-left: 1rem;
+      }
+
+      label {
+        @include flex();
+      }
+
+      input {
+        width: 3rem;
+        height: 3rem;
+        border: 0;
+        border-radius: 50%;
+        position: relative;
+        cursor: pointer;
+      }
+    }
+  }
 }
 .footer {
 }
