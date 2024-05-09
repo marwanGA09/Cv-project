@@ -89,6 +89,25 @@ function CvContainer({ children }) {
   return (
     <div className="cv-container">
       <TopCvContainer />
+      <div className="cv">
+        <div className="cv__header">
+          <div className="personal-description">
+            <h2>Adem kedir Galiyo</h2>
+            <h4>Back-end software engineer</h4>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+              molestiae amet fuga minima corrupti maiores tempore exercitationem
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+              molestiae necessitatibus. Iusto,.
+            </p>
+          </div>
+          <div className="image">
+            <div>
+              <img src="./../public/default.jpg" alt="user's image" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
