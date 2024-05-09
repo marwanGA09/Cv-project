@@ -3,6 +3,12 @@
   overflow-y: scroll;
 }
 
+@mixin flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 :root {
   font-size: 62.5%;
 }
@@ -31,21 +37,80 @@ body {
   display: grid;
   grid-template-columns: 3fr 7fr;
   grid-template-rows: 10rem 1fr 5rem;
+  gap: 0.3rem;
+  .side-bar,
+  .cv-container,
+  .footer {
+    box-shadow: 0 0 1rem 0.1rem rgb(173, 125, 125);
+  }
 
-  .class1 {
-    background-color: rgb(122, 75, 75);
-    grid-column: span 2;
-  }
-  .class2 {
-    background-color: rgb(88, 180, 68);
-    grid-row: span 2;
+  .side-bar,
+  .cv-container {
     @include handleScroll();
   }
-  .class3 {
-    background-color: rgb(61, 180, 199);
-    @include handleScroll();
+}
+
+.navigation {
+  padding: 2rem 5rem;
+  grid-column: span 2;
+  @include flex();
+  justify-content: space-between;
+
+  font-size: 2rem;
+  font-weight: 900;
+
+  p {
+    text-transform: uppercase;
+    letter-spacing: 0.6rem;
+    cursor: pointer;
+    transition: all 0.5s ease-in;
+    padding-left: 0.4rem;
+
+    span {
+      font-size: 1.2em;
+      font-style: italic;
+    }
+    &:hover {
+      transform: translateX(10%);
+      border-left: solid 0.7rem red;
+    }
   }
-  .class4 {
-    background-color: rgb(121, 40, 124);
+
+  div {
+    @include flex();
+    justify-content: space-evenly;
+    gap: 2rem;
+    text-transform: capitalize;
+
+    a,
+    span {
+      cursor: pointer;
+      transition: all 0.3s ease-in;
+    }
+    a:hover,
+    span:hover {
+      transform: translateY(-10%);
+      border-bottom: solid 0.2rem red;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    span {
+      font-weight: 100;
+      font-style: oblique;
+
+      &:hover {
+        color: rgb(189, 61, 61);
+      }
+    }
   }
+}
+.side-bar {
+  grid-row: span 2;
+}
+.cv-container {
+}
+.footer {
 }
