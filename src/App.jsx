@@ -27,76 +27,94 @@ function SideBar({ children }) {
       <div className="cards">
         <Card
           tittle={'personal information'}
-          descripton={
+          description={
             'correct personal information is essential part. correctly fill you personal information'
           }
         ></Card>
         <Card
           tittle={'personal information'}
-          descripton={
+          description={
             'correct personal information is essential part. correctly fill you personal information'
           }
         ></Card>
         <Card
           tittle={'personal information'}
-          descripton={
+          description={
             'correct personal information is essential part. correctly fill you personal information'
           }
         ></Card>
         <Card
           tittle={'personal information'}
-          descripton={
+          description={
             'correct personal information is essential part. correctly fill you personal information'
           }
         ></Card>
         <Card
           tittle={'personal information'}
-          descripton={
+          description={
             'correct personal information is essential part. correctly fill you personal information'
           }
         ></Card>
         <Card
           tittle={'personal information'}
-          descripton={
+          description={
             'correct personal information is essential part. correctly fill you personal information'
           }
         ></Card>
         <Card
           tittle={'personal information'}
-          descripton={
+          description={
             'correct personal information is essential part. correctly fill you personal information'
           }
         ></Card>
-
-        {/* <div className="card">card</div>
-        <div className="card">card</div>
-        <div className="card">card </div>
-        <div className="card">card </div>
-        <div className="card">card</div>
-        <div className="card">card</div>
-        <div className="card">card </div>
-        <div className="card">card</div>
-        <div className="card">card</div> */}
       </div>
     </div>
   );
 }
+
+function Card({ tittle, description, children }) {
+  return (
+    <div className="card">
+      <h3>{tittle}</h3>
+      <p>{description}</p>
+      <div>{children}</div>
+      <button>
+        <span>⏬</span>
+      </button>
+    </div>
+  );
+}
+
 function CvContainer({ children }) {
-  return <div className="cv-container">class3 </div>;
+  return (
+    <div className="cv-container">
+      <TopCvContainer />
+    </div>
+  );
 }
 function Footer({ children }) {
   return <div className="footer">footer </div>;
 }
 
-function Card({ tittle, descripton, children }) {
+function TopCvContainer({ children }) {
   return (
-    <div className="card">
-      <h3>{tittle}</h3>
-      <p>{descripton}</p>
-      <div>{children}</div>
-      <button>
-        <span>⏬</span>
-      </button>
+    <div className="top">
+      <p>Name: merwan</p>
+      <div>
+        <label htmlFor="font">
+          Font-style:
+          <select name="font" id="font">
+            <option value="ar">Arial</option>
+            <option value="he">helvetic</option>
+            <option value="mn">mono</option>
+            <option value="ss">sans-serif</option>
+          </select>
+        </label>
+        <label htmlFor="color">
+          <span>Primary color: </span>
+          <input type="color" name="color" id="color" />
+        </label>
+      </div>
     </div>
   );
 }
