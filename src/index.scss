@@ -107,10 +107,86 @@ body {
     }
   }
 }
+
 .side-bar {
   grid-row: span 2;
+  padding: 4rem 2rem;
+
+  @include flex();
+  flex-direction: column;
+  gap: 6rem;
+  justify-content: start;
+
+  .general-page-description {
+    width: 45ch;
+    padding-top: 3rem;
+
+    p {
+      letter-spacing: 0.2rem;
+      font-size: 1.8rem;
+    }
+  }
+
+  .cards {
+    @include flex();
+    flex-direction: column;
+    justify-content: start;
+    gap: 1rem;
+  }
 }
+
+// CARD STYLE
+
+.card {
+  background-color: beige;
+  padding: 2rem;
+  @include flex();
+  flex-direction: column;
+  gap: 1.3rem;
+  justify-content: start;
+  width: 45rem;
+
+  h3 {
+    font-size: 2.3rem;
+    text-transform: capitalize;
+  }
+
+  p {
+    font-size: 1.8rem;
+  }
+
+  div {
+  }
+
+  button {
+    font-size: 2.2rem;
+    padding: 0.6rem 10rem;
+    border: 0;
+    border-radius: 0.5rem;
+
+    span {
+      transition: all 1s;
+      position: relative;
+      top: 0;
+    }
+
+    &:hover span {
+      top: 2rem;
+    }
+  }
+}
+
 .cv-container {
 }
 .footer {
+}
+
+// UN USED ANIMATION
+@keyframes move-down {
+  from {
+    top: 0;
+  }
+  to {
+    top: 3rem;
+  }
 }
