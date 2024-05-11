@@ -140,8 +140,9 @@ function CV({ children }) {
           </CvCard>
         </div>
         <div className="right">
-          <CvCard />
-          <CvCard />
+          <CvCard>
+            <SkillSet />
+          </CvCard>
           <CvCard />
         </div>
       </div>
@@ -239,6 +240,26 @@ function Education() {
         Year:
         <span className="from">7/2022</span> -<span className="to">2/2023</span>
       </h6>
+    </div>
+  );
+}
+
+function SkillSet() {
+  return (
+    <div className="skills">
+      <span>React</span>
+      <span>Javascript</span>
+      <span>Node</span>
+      <span>HTML</span>
+      <span>CSS</span>
+      <span>Tailwind</span>
+      <span>Bootstrap</span>
+      <span>Javascript</span>
+      <span>Node</span>
+      <span>HTML</span>
+      <span>CSS</span>
+      <span>Tailwind</span>
+      <span>Bootstrap</span>
     </div>
   );
 }
