@@ -130,7 +130,10 @@ function CV({ children }) {
             <Experience />
             <Experience />
           </CvCard>
-          <CvCard />
+          <CvCard>
+            <PersonalProject />
+            <PersonalProject />
+          </CvCard>
           <CvCard />
         </div>
         <div className="right">
@@ -186,11 +189,32 @@ function Experience() {
       <h6>
         Task/ Responsibility:{' '}
         <span>creating ux/ui friendly webpages for organization</span>
-        <p className="date">
-          <span className="from">7/2022</span> to
-          <span className="to">2/2023</span>
-        </p>
       </h6>
+      <h6 className="date">
+        Year:
+        <span className="from">7/2022</span> -<span className="to">2/2023</span>
+      </h6>
+    </div>
+  );
+}
+
+function PersonalProject() {
+  return (
+    <div className="personal-project">
+      <h5>
+        Project name: <span>Weather App</span>
+      </h5>
+      <h6>
+        description:{' '}
+        <span>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo
+          mollitia quod esse repellat, sed, amet officiis, molestias quibusdam
+          labor.
+        </span>
+      </h6>
+      <a href="#" target="_black">
+        <span>🐈</span> Github
+      </a>
     </div>
   );
 }
