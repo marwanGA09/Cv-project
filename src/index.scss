@@ -1,5 +1,5 @@
 $cv-bg-color: rgb(253, 253, 253);
-$cv-bg-primary-color: rgb(194, 32, 110);
+$cv-bg-primary-color: rgba(3, 73, 165, 0.97);
 @mixin handleScroll {
   overflow-x: hidden;
   overflow-y: auto;
@@ -27,7 +27,7 @@ $cv-bg-primary-color: rgb(194, 32, 110);
 body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 1.6rem;
-  color: rgb(27, 27, 27);
+  color: rgb(55, 55, 55);
 }
 
 .App {
@@ -234,6 +234,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
+    color: rgb(220, 220, 220);
 
     .personal-description {
       width: 75%;
@@ -310,13 +311,13 @@ body {
 
 .cv-card {
   width: auto;
-  height: 10rem;
+  height: min-content;
   margin: 1.5rem;
   padding: 0.8rem;
   // background-color: bisque;
   position: relative;
   div {
-    padding-left: 1rem;
+    padding-left: 0.5rem;
   }
 
   // &::after,
@@ -335,6 +336,26 @@ body {
   //   right: -1rem;
   //   transform: rotate(90deg);
   // }
+}
+
+.experience {
+  padding-top: 0.4rem;
+  padding-bottom: 0.6rem;
+
+  h5,
+  h6 {
+    color: rgb(107, 107, 107);
+  }
+  h5 {
+    font-size: 1.7rem;
+  }
+  h6 {
+    font-size: 1.6rem;
+  }
+
+  span {
+    margin-left: 0.3rem;
+  }
 }
 
 // FOOTER STYLE
