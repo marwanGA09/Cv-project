@@ -124,6 +124,18 @@ function CV({ children }) {
   return (
     <div className="cv">
       <CvHeader />
+      <div className="cv__main">
+        <div className="left">
+          <CvCard />
+          <CvCard />
+          <CvCard />
+        </div>
+        <div className="right">
+          <CvCard />
+          <CvCard />
+          <CvCard />
+        </div>
+      </div>
     </div>
   );
 }
@@ -146,6 +158,15 @@ function CvHeader({ children }) {
           <img src="./../public/default.jpg" alt="user's image" />
         </div>
       </div>
+    </div>
+  );
+}
+
+function CvCard({ children }) {
+  return (
+    <div className="cv-card">
+      <h3>Working Experience</h3>
+      <div>fill {children}</div>
     </div>
   );
 }
