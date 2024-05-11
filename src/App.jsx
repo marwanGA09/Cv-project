@@ -134,7 +134,10 @@ function CV({ children }) {
             <PersonalProject />
             <PersonalProject />
           </CvCard>
-          <CvCard />
+          <CvCard>
+            <Education />
+            <Education />
+          </CvCard>
         </div>
         <div className="right">
           <CvCard />
@@ -187,8 +190,8 @@ function Experience() {
         work Space/ Company: <span>Google</span>
       </h6>
       <h6>
-        Task/ Responsibility:{' '}
-        <span>creating ux/ui friendly webpages for organization</span>
+        Task/ Responsibility:
+        <span>creating UX/UI friendly webpages for organization</span>
       </h6>
       <h6 className="date">
         Year:
@@ -205,7 +208,7 @@ function PersonalProject() {
         Project name: <span>Weather App</span>
       </h5>
       <h6>
-        description:{' '}
+        description:
         <span>
           Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo
           mollitia quod esse repellat, sed, amet officiis, molestias quibusdam
@@ -215,6 +218,27 @@ function PersonalProject() {
       <a href="#" target="_black">
         <span>🐈</span> Github
       </a>
+    </div>
+  );
+}
+
+function Education() {
+  return (
+    <div className="education">
+      <h5>
+        Study Program: <span>Software engineering</span>
+      </h5>
+      <h6>
+        Study Level:
+        <span>bachelor degree</span>
+      </h6>
+      <h6>
+        Institution :<span>Haramaya University</span>
+      </h6>
+      <h6 className="date">
+        Year:
+        <span className="from">7/2022</span> -<span className="to">2/2023</span>
+      </h6>
     </div>
   );
 }
