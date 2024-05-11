@@ -126,7 +126,10 @@ function CV({ children }) {
       <CvHeader />
       <div className="cv__main">
         <div className="left">
-          <CvCard />
+          <CvCard>
+            <Experience />
+            <Experience />
+          </CvCard>
           <CvCard />
           <CvCard />
         </div>
@@ -166,7 +169,28 @@ function CvCard({ children }) {
   return (
     <div className="cv-card">
       <h3>Working Experience</h3>
-      <div>fill {children}</div>
+      <div> {children}</div>
+    </div>
+  );
+}
+
+function Experience() {
+  return (
+    <div className="experience">
+      <h5>
+        Tittle/ Position: <span>front End developer</span>
+      </h5>
+      <h6>
+        work Space/ Company: <span>Google</span>
+      </h6>
+      <h6>
+        Task/ Responsibility:{' '}
+        <span>creating ux/ui friendly webpages for organization</span>
+        <p className="date">
+          <span className="from">7/2022</span> to
+          <span className="to">2/2023</span>
+        </p>
+      </h6>
     </div>
   );
 }
