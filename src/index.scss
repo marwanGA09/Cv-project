@@ -338,7 +338,8 @@ body {
   // }
 }
 
-.experience {
+.experience,
+.personal-project {
   padding-top: 0.4rem;
   padding-bottom: 0.6rem;
 
@@ -355,6 +356,13 @@ body {
 
   span {
     margin-left: 0.3rem;
+    font-weight: 400;
+  }
+
+  a {
+    text-decoration: none;
+    color: rgb(126, 24, 141);
+    font-weight: 700;
   }
 }
 
