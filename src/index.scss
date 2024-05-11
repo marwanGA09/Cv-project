@@ -156,9 +156,6 @@ body {
     font-size: 1.8rem;
   }
 
-  div {
-  }
-
   button {
     font-size: 2.2rem;
     padding: 0.6rem 10rem;
@@ -176,6 +173,8 @@ body {
     }
   }
 }
+
+// CV STYLE
 
 .cv-container {
   @include flex();
@@ -225,72 +224,123 @@ body {
 .cv {
   width: 93%;
   padding: 3rem;
-  height: 40rem;
   background-color: $cv-bg-color;
   box-shadow: 0 0 9px 0 rgba(51, 51, 51, 0.573);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-  }
 
-  .personal-description {
-    width: 75%;
-    background-color: $cv-bg-primary-color;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
-    gap: 1rem;
-
-    &::before {
-      position: absolute;
-      content: '';
+    .personal-description {
+      width: 75%;
       background-color: $cv-bg-primary-color;
-      width: 5%;
-      height: 100%;
-      left: -3rem;
-      z-index: -1;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+      gap: 1rem;
+
+      &::before {
+        position: absolute;
+        content: '';
+        background-color: $cv-bg-primary-color;
+        width: 5%;
+        height: 100%;
+        left: -3rem;
+        z-index: -1;
+      }
+
+      h2 {
+        font-size: 3.2rem;
+        text-transform: capitalize;
+      }
+
+      h4 {
+        border-bottom: 2px solid brown;
+        text-transform: capitalize;
+      }
     }
 
-    h2 {
-      font-size: 3.2rem;
-      text-transform: capitalize;
-    }
+    .image {
+      width: 18rem;
+      height: 18rem;
+      border-radius: 50%;
+      background-color: $cv-bg-primary-color;
+      @include flex();
+      margin-right: 5rem;
 
-    h4 {
-      border-bottom: 2px solid brown;
-      text-transform: capitalize;
+      div {
+        width: 95%;
+        height: 95%;
+        border-radius: 50%;
+        background-color: $cv-bg-color;
+        @include flex();
+      }
+
+      img {
+        width: 94%;
+        height: 94%;
+        border-radius: 100%;
+      }
     }
   }
 
-  .image {
-    width: 18rem;
-    height: 18rem;
-    border-radius: 50%;
-    background-color: $cv-bg-primary-color;
-    @include flex();
+  &__main {
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    gap: 3rem;
 
-    div {
-      width: 95%;
-      height: 95%;
-      border-radius: 50%;
-      background-color: $cv-bg-color;
-      @include flex();
+    .left {
+      // background-color: aquamarine;
+      height: 150rem;
     }
 
-    img {
-      width: 94%;
-      height: 94%;
-      border-radius: 100%;
+    .right {
+      // background-color: burlywood;
+      height: 150rem;
     }
   }
 }
 
+.cv-card {
+  width: auto;
+  height: 10rem;
+  margin: 1.5rem;
+  padding: 0.8rem;
+  // background-color: bisque;
+  position: relative;
+  div {
+    padding-left: 1rem;
+  }
+
+  // &::after,
+  &::before {
+    position: absolute;
+    top: -3rem;
+    font-size: 3rem;
+    content: '⸇';
+  }
+
+  &::before {
+    left: -1rem;
+    transform: rotateY(-180deg) rotate(90deg);
+  }
+  // &::after {
+  //   right: -1rem;
+  //   transform: rotate(90deg);
+  // }
+}
+
+// FOOTER STYLE
 .footer {
+  // rule
+  background-color: brown;
 }
 
 // UN USED ANIMATION
