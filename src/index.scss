@@ -294,7 +294,7 @@ body {
 
   &__main {
     display: grid;
-    grid-template-columns: 5fr 2fr;
+    grid-template-columns: 1fr 30%;
     gap: 3rem;
 
     .left {
@@ -303,6 +303,7 @@ body {
     }
 
     .right {
+      // width: max-content;
       // background-color: burlywood;
       height: 150rem;
     }
@@ -314,7 +315,7 @@ body {
   height: min-content;
   margin: 1.5rem;
   padding: 0.8rem;
-  // background-color: bisque;
+  // background-color: rgb(78, 187, 31);
   position: relative;
   div {
     padding-left: 0.5rem;
@@ -365,6 +366,21 @@ body {
     text-decoration: none;
     color: rgb(86, 63, 90);
     font-weight: 700;
+  }
+}
+
+.skills {
+  // background-color: burlywood;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  span {
+    display: inline-block;
+    width: min-content;
+    padding: 0.7rem 1.3rem;
+    background-color: rgba(131, 99, 99, 0.193);
+    border-radius: 3rem;
+    // margin: 1rem;
   }
 }
 
