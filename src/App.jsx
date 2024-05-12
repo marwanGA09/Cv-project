@@ -143,7 +143,9 @@ function CV({ children }) {
           <CvCard>
             <SkillSet />
           </CvCard>
-          <CvCard />
+          <CvCard>
+            <Language />
+          </CvCard>
         </div>
       </div>
     </div>
@@ -261,5 +263,23 @@ function SkillSet() {
       <span>Tailwind</span>
       <span>Bootstrap</span>
     </div>
+  );
+}
+function Language() {
+  return (
+    <ul className="languages">
+      <li>
+        <span>English</span>:<span>Professional</span>
+      </li>
+      <li>
+        <span>French</span>:<span>Limited professional</span>
+      </li>
+      <li>
+        <span>Amharic</span>:<span>Bilingual</span>
+      </li>
+      <li>
+        <span>Afan Oromo</span>:<span>Bilingual</span>
+      </li>
+    </ul>
   );
 }
