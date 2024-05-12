@@ -134,33 +134,33 @@ function CV({ children }) {
       <CvHeader />
       <div className="cv__main">
         <div className="left">
-          <CvCard>
+          <CvCard heading={'Experience'}>
             <Experience />
             <Experience />
           </CvCard>
-          <CvCard>
+          <CvCard heading={'Personal Project'}>
             <PersonalProject />
             <PersonalProject />
           </CvCard>
-          <CvCard>
+          <CvCard heading={'Education Level'}>
             <Education />
             <Education />
           </CvCard>
-          <CvCard>
+          <CvCard heading={'Personal Achievement'}>
             <PersonalAchievement />
           </CvCard>
         </div>
         <div className="right">
-          <CvCard>
+          <CvCard heading={'Contact'}>
             <SocialMediaLinks />
           </CvCard>
-          <CvCard>
+          <CvCard heading={'Skill Set'}>
             <SkillSet />
           </CvCard>
-          <CvCard>
+          <CvCard heading={'Language'}>
             <Language />
           </CvCard>
-          <CvCard>
+          <CvCard heading={'Interest/ Hobbies'}>
             <Interest />
           </CvCard>
         </div>
@@ -191,10 +191,10 @@ function CvHeader({ children }) {
   );
 }
 
-function CvCard({ children }) {
+function CvCard({ heading, children }) {
   return (
     <div className="cv-card">
-      <h3>Working Experience</h3>
+      <h3>{heading}</h3>
       <div> {children}</div>
     </div>
   );
