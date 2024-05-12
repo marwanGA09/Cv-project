@@ -144,6 +144,9 @@ function CV({ children }) {
         </div>
         <div className="right">
           <CvCard>
+            <SocialMediaLinks />
+          </CvCard>
+          <CvCard>
             <SkillSet />
           </CvCard>
           <CvCard>
@@ -318,5 +321,32 @@ function PersonalAchievement() {
         <span className="from">7/2022</span>
       </h6>
     </div>
+  );
+}
+
+function SocialMediaLinks() {
+  return (
+    <ul className="social-media">
+      <li>
+        <span>🖄</span>
+        <a href="#">Email</a>
+      </li>
+      <li>
+        <span>📞</span>
+        <a href="#">Phone</a>
+      </li>
+      <li>
+        <span>🧩</span>
+        <a href="#">LinkedIn</a>
+      </li>
+      <li>
+        <span>🐈</span>
+        <a href="#">Github</a>
+      </li>
+      <li>
+        <span>✖️</span>
+        <a href="#">Twitter</a>
+      </li>
+    </ul>
   );
 }
