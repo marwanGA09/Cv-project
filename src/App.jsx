@@ -138,6 +138,9 @@ function CV({ children }) {
             <Education />
             <Education />
           </CvCard>
+          <CvCard>
+            <PersonalAchievement />
+          </CvCard>
         </div>
         <div className="right">
           <CvCard>
@@ -265,6 +268,7 @@ function SkillSet() {
     </div>
   );
 }
+
 function Language() {
   return (
     <ul className="languages">
@@ -281,5 +285,26 @@ function Language() {
         <span>Afan Oromo</span>:<span>Bilingual</span>
       </li>
     </ul>
+  );
+}
+
+function PersonalAchievement() {
+  return (
+    <div className="achievement">
+      <h5>
+        Tittle: <span>International Coding Competition</span>
+      </h5>
+      <h6>
+        Description:
+        <span>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae,
+          nostrum, fugit facere quo tenetur corriciis natus reiciendis!
+        </span>
+      </h6>{' '}
+      <h6 className="date">
+        Year:
+        <span className="from">7/2022</span>
+      </h6>
+    </div>
   );
 }
