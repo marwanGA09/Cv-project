@@ -94,7 +94,15 @@ function CvContainer({ children }) {
   );
 }
 function Footer({ children }) {
-  return <div className="footer">footer </div>;
+  return (
+    <div className="footer">
+      {' '}
+      <p>Developed by Adem Kedir </p>{' '}
+      <div>
+        <a href="#">🐈</a> <a href="#">🧩</a> <a href="#">🐦</a>
+      </div>
+    </div>
+  );
 }
 
 function TopCvContainer({ children }) {
