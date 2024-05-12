@@ -341,7 +341,8 @@ body {
 
 .experience,
 .personal-project,
-.education {
+.education,
+.languages {
   padding-top: 0.4rem;
   padding-bottom: 0.6rem;
   width: 90%;
@@ -366,6 +367,19 @@ body {
     text-decoration: none;
     color: rgb(86, 63, 90);
     font-weight: 700;
+  }
+  li {
+    list-style: none;
+    position: relative;
+    padding: 0.2rem 0;
+    &::before {
+      content: '⚡';
+      position: absolute;
+      font-size: 1.1em;
+      left: -2rem;
+      width: 1.4rem;
+      height: 1.4rem;
+    }
   }
 }
 
