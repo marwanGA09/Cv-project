@@ -149,6 +149,9 @@ function CV({ children }) {
           <CvCard>
             <Language />
           </CvCard>
+          <CvCard>
+            <Interest />
+          </CvCard>
         </div>
       </div>
     </div>
@@ -265,6 +268,15 @@ function SkillSet() {
       <span>CSS</span>
       <span>Tailwind</span>
       <span>Bootstrap</span>
+    </div>
+  );
+}
+function Interest() {
+  return (
+    <div className="interest">
+      <span className="interestItem">Searching for new technology</span>
+      <span className="interestItem">Movies</span>
+      <span className="interestItem">Reading Article</span>
     </div>
   );
 }

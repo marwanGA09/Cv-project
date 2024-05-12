@@ -1,5 +1,6 @@
 $cv-bg-color: rgb(253, 253, 253);
 $cv-bg-primary-color: rgba(3, 73, 165, 0.97);
+$cv-container-padding: 4rem;
 @mixin handleScroll {
   overflow-x: hidden;
   overflow-y: auto;
@@ -223,7 +224,7 @@ body {
 
 .cv {
   width: 93%;
-  padding: 3rem;
+  padding: $cv-container-padding;
   background-color: $cv-bg-color;
   box-shadow: 0 0 9px 0 rgba(51, 51, 51, 0.573);
   display: flex;
@@ -251,9 +252,9 @@ body {
         position: absolute;
         content: '';
         background-color: $cv-bg-primary-color;
-        width: 5%;
+        width: $cv-container-padding;
         height: 100%;
-        left: -3rem;
+        left: -$cv-container-padding;
         z-index: -1;
       }
 
@@ -274,7 +275,7 @@ body {
       border-radius: 50%;
       background-color: $cv-bg-primary-color;
       @include flex();
-      margin-right: 5rem;
+      margin-right: 2rem;
 
       div {
         width: 95%;
@@ -296,17 +297,6 @@ body {
     display: grid;
     grid-template-columns: 1fr 30%;
     gap: 3rem;
-
-    .left {
-      // background-color: aquamarine;
-      height: 150rem;
-    }
-
-    .right {
-      // width: max-content;
-      // background-color: burlywood;
-      height: 150rem;
-    }
   }
 }
 
@@ -343,7 +333,8 @@ body {
 .personal-project,
 .education,
 .languages,
-.achievement {
+.achievement,
+.interest {
   padding-top: 0.4rem;
   padding-bottom: 0.6rem;
   width: 90%;
@@ -362,6 +353,18 @@ body {
   span {
     margin-left: 0.3rem;
     font-weight: 400;
+
+    &.interestItem {
+      display: block;
+      position: relative;
+
+      &::before {
+        position: absolute;
+        content: '✔️';
+        left: -2rem;
+        font-size: 1.3rem;
+      }
+    }
   }
 
   a {
