@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Navigation from './assets/component/Navigation';
 
 export default function App() {
@@ -13,7 +14,12 @@ export default function App() {
   );
 }
 
+function Test() {
+  return <div className="test"></div>;
+}
+
 function SideBar({ children }) {
+  const [currentActive, setCurrentActive] = useState(null);
   return (
     <div className="side-bar">
       <div className="general-page-description">
@@ -26,60 +32,141 @@ function SideBar({ children }) {
       </div>
       <div className="cards">
         <Card
+          id={'information'}
           tittle={'personal information'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
           description={
             'correct personal information is essential part. correctly fill you personal information'
           }
-        ></Card>
+        >
+          <Test />
+        </Card>
         <Card
-          tittle={'personal information'}
+          id={'experience'}
+          tittle={'Experience'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
           description={
             'correct personal information is essential part. correctly fill you personal information'
           }
-        ></Card>
+        >
+          {' '}
+          <Test />
+        </Card>
         <Card
-          tittle={'personal information'}
+          id={'project'}
+          tittle={'Personal Project'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
           description={
             'correct personal information is essential part. correctly fill you personal information'
           }
-        ></Card>
+        >
+          {' '}
+          <Test />
+        </Card>
         <Card
-          tittle={'personal information'}
+          id={'education'}
+          tittle={'Education Level'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
           description={
             'correct personal information is essential part. correctly fill you personal information'
           }
-        ></Card>
+        >
+          {' '}
+          <Test />
+        </Card>
         <Card
-          tittle={'personal information'}
+          id={'achievement'}
+          tittle={'Personal Achievement'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
           description={
             'correct personal information is essential part. correctly fill you personal information'
           }
-        ></Card>
+        >
+          {' '}
+          <Test />
+        </Card>
         <Card
-          tittle={'personal information'}
+          id={'contact'}
+          tittle={'Contact'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
           description={
             'correct personal information is essential part. correctly fill you personal information'
           }
-        ></Card>
+        >
+          {' '}
+          <Test />
+        </Card>
         <Card
-          tittle={'personal information'}
+          id={'skill'}
+          tittle={'Skill Set'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
           description={
             'correct personal information is essential part. correctly fill you personal information'
           }
-        ></Card>
+        >
+          {' '}
+          <Test />
+        </Card>
+        <Card
+          id={'language'}
+          tittle={'Language'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
+          description={
+            'correct personal information is essential part. correctly fill you personal information'
+          }
+        >
+          {' '}
+          <Test />
+        </Card>
+        <Card
+          id={'interest'}
+          tittle={'Interest/ Hobbies'}
+          currentActive={currentActive}
+          onCurrentActive={setCurrentActive}
+          description={
+            'correct personal information is essential part. correctly fill you personal information'
+          }
+        >
+          {' '}
+          <Test />
+        </Card>
       </div>
     </div>
   );
 }
 
-function Card({ tittle, description, children }) {
+function Card({
+  tittle,
+  description,
+  children,
+  id,
+  currentActive,
+  onCurrentActive,
+}) {
+  const isCurrent = currentActive === id;
+
   return (
     <div className="card">
       <h3>{tittle}</h3>
       <p>{description}</p>
-      <div>{children}</div>
-      <button>
-        <span>⏬</span>
+      <div>{isCurrent && children}</div>
+      <button
+        onClick={() => {
+          isCurrent ? onCurrentActive(null) : onCurrentActive(id);
+        }}
+      >
+        {isCurrent ? 'Close' : 'Open'}{' '}
+        <span className={`${isCurrent ? 'open' : 'close'}`}>
+          {isCurrent ? '⏫' : '⏬'}
+        </span>
       </button>
     </div>
   );
