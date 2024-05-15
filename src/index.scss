@@ -235,7 +235,7 @@ body {
   flex-direction: column;
   gap: 2rem;
   margin-bottom: 2rem;
-  &__header {
+  &__personal-information {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
@@ -462,7 +462,8 @@ body {
 
 // STYLE INPUT COMPONENT
 
-.personal-description-input {
+.personal-description-input,
+.experience-input {
   background-color: #dceeff;
   padding: 1rem;
   display: grid;

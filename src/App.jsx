@@ -31,7 +31,10 @@ function SideBarCvContainerGroup() {
 
   return (
     <>
-      <SideBar onPersonalInfoChange={handlePersonalInformation} />
+      <SideBar
+        onPersonalInfoChange={handlePersonalInformation}
+        personalInformation={personalInformation}
+      />
       <CvContainer personalInformation={personalInformation} />
     </>
   );
@@ -41,7 +44,7 @@ function Test() {
   return <div className="test"></div>;
 }
 
-function SideBar({ children, onPersonalInfoChange }) {
+function SideBar({ children, onPersonalInfoChange, personalInformation }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
     <div className="side-bar">
@@ -65,6 +68,7 @@ function SideBar({ children, onPersonalInfoChange }) {
         >
           <PersonalInformationInput
             onPersonalInfoChange={onPersonalInfoChange}
+            personalInformation={personalInformation}
           />
         </Card>
         <Card
@@ -76,8 +80,7 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
-          <Test />
+          <ExperienceInput />
         </Card>
         <Card
           id={'project'}
@@ -88,7 +91,6 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
           <Test />
         </Card>
         <Card
@@ -100,7 +102,6 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
           <Test />
         </Card>
         <Card
@@ -112,7 +113,6 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
           <Test />
         </Card>
         <Card
@@ -124,7 +124,6 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
           <Test />
         </Card>
         <Card
@@ -136,7 +135,6 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
           <Test />
         </Card>
         <Card
@@ -148,7 +146,6 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
           <Test />
         </Card>
         <Card
@@ -160,7 +157,6 @@ function SideBar({ children, onPersonalInfoChange }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {' '}
           <Test />
         </Card>
       </div>
@@ -188,7 +184,7 @@ function Card({
           isCurrent ? onCurrentActive(null) : onCurrentActive(id);
         }}
       >
-        {isCurrent ? 'Close' : 'Open'}{' '}
+        {isCurrent ? 'Close' : 'Open'}
         <span className={`${isCurrent ? 'open' : 'close'}`}>
           {isCurrent ? '⏫' : '⏬'}
         </span>
@@ -208,8 +204,7 @@ function CvContainer({ children, personalInformation }) {
 function Footer({ children }) {
   return (
     <div className="footer">
-      {' '}
-      <p>Developed by Adem Kedir </p>{' '}
+      <p>Developed by Adem Kedir </p>
       <div>
         <a href="#">🐈</a> <a href="#">🧩</a> <a href="#">🐦</a>
       </div>
@@ -240,10 +235,20 @@ function TopCvContainer({ children }) {
   );
 }
 
+// General user CVCard component
+function CvCard({ heading, children }) {
+  return (
+    <div className="cv-card">
+      <h3>{heading}</h3>
+      <div> {children}</div>
+    </div>
+  );
+}
+
 function CV({ children, personalInformation }) {
   return (
     <div className="cv">
-      <CvHeader personalInformation={personalInformation} />
+      <PersonalInformation personalInformation={personalInformation} />
       <div className="cv__main">
         <div className="left">
           <CvCard heading={'Experience'}>
@@ -281,7 +286,10 @@ function CV({ children, personalInformation }) {
   );
 }
 
-function PersonalInformationInput({ onPersonalInfoChange }) {
+function PersonalInformationInput({
+  onPersonalInfoChange,
+  personalInformation,
+}) {
   return (
     <div className="personal-description-input">
       <label htmlFor="full-name">Full name:</label>
@@ -290,31 +298,34 @@ function PersonalInformationInput({ onPersonalInfoChange }) {
         name="fullName"
         id="full-name"
         placeholder="Adem kedir Galiyo"
+        // value={personalInformation.fullName}
         onChange={(e) => onPersonalInfoChange(e)}
       />
-      <label htmlFor="profession">Profession</label>{' '}
+      <label htmlFor="profession">Profession</label>
       <input
         type="text"
         name="profession"
         id="profession"
         placeholder="Software Engineer"
+        // value={personalInformation.profession}
         onChange={(e) => onPersonalInfoChange(e)}
       />
-      <label htmlFor="description">Heading Sentence</label>{' '}
+      <label htmlFor="description">Heading Sentence</label>
       <textarea
         name="description"
         id="description"
         maxLength={300}
         placeholder="I am dedicated ..."
+        // value={personalInformation.description}
         onChange={(e) => onPersonalInfoChange(e)}
       ></textarea>
     </div>
   );
 }
 
-function CvHeader({ children, personalInformation }) {
+function PersonalInformation({ children, personalInformation }) {
   return (
-    <div className="cv__header">
+    <div className="cv__personal-information">
       <div className="personal-description">
         <h2>{personalInformation.fullName}</h2>
         <h4>{personalInformation.profession}</h4>
@@ -329,15 +340,6 @@ function CvHeader({ children, personalInformation }) {
   );
 }
 
-function CvCard({ heading, children }) {
-  return (
-    <div className="cv-card">
-      <h3>{heading}</h3>
-      <div> {children}</div>
-    </div>
-  );
-}
-
 function Experience() {
   return (
     <div className="experience">
@@ -345,7 +347,7 @@ function Experience() {
         Tittle/ Position: <span>front End developer</span>
       </h5>
       <h6>
-        work Space/ Company: <span>Google</span>
+        Work Space/ Company: <span>Google</span>
       </h6>
       <h6>
         Task/ Responsibility:
@@ -355,6 +357,47 @@ function Experience() {
         Year:
         <span className="from">7/2022</span> -<span className="to">2/2023</span>
       </h6>
+    </div>
+  );
+}
+
+function ExperienceInput() {
+  return (
+    <div className="experience-input">
+      <label htmlFor="position">Tittle /Position:</label>
+      <input
+        type="text"
+        name="position"
+        id="Position"
+        placeholder="front End developer"
+        // onChange={(e) => onPersonalInfoChange(e)}
+      />
+      <label htmlFor="company">Company:</label>
+      <input
+        type="text"
+        name="company"
+        id="company"
+        placeholder="Google"
+        // onChange={(e) => onPersonalInfoChange(e)}
+      />
+      <label htmlFor="responsibility">Responsibility:</label>
+      <input
+        type="text"
+        name="responsibility"
+        id="responsibility"
+        placeholder="creating UX/UI ..."
+        // onChange={(e) => onPersonalInfoChange(e)}
+      />
+      <label htmlFor="startDate">From: </label>
+      <input
+        type="date"
+        name="start"
+        id="start"
+        value={'2024-05-20'}
+        onChange={(e) => console.log(e.target.value)}
+      />
+      <label htmlFor="toDate">To: </label>
+      <input type="date" name="start" id="start" />
     </div>
   );
 }
@@ -461,7 +504,7 @@ function PersonalAchievement() {
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae,
           nostrum, fugit facere quo tenetur corriciis natus reiciendis!
         </span>
-      </h6>{' '}
+      </h6>
       <h6 className="date">
         Year:
         <span className="from">7/2022</span>
