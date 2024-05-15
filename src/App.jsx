@@ -17,10 +17,15 @@ function SideBarCvContainerGroup() {
   const [personalInformation, setPersonalInformation] = useState({
     fullName: 'Adem Kedir',
     profession: 'Front end developer',
-    description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
-          molestiae amet fuga minima corrupti maiores tempore exercitationem
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
-          molestiae necessitatibus. Iusto,.`,
+    description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
+  });
+
+  const [experienceData, setExperienceData] = useState({
+    position: 'front End developer',
+    company: 'Google',
+    responsibility: 'creating UX/UI friendly webpages for organization',
+    from: '2022-07-02',
+    to: '2023-03-27',
   });
 
   function handlePersonalInformation(e) {
@@ -29,13 +34,24 @@ function SideBarCvContainerGroup() {
     });
   }
 
+  function handleExperienceInfo(e) {
+    setExperienceData((experienceData) => {
+      return { ...experienceData, [e.target.name]: e.target.value };
+    });
+  }
+
   return (
     <>
       <SideBar
         onPersonalInfoChange={handlePersonalInformation}
         personalInformation={personalInformation}
+        onExperienceInput={handleExperienceInfo}
+        experienceData={experienceData}
       />
-      <CvContainer personalInformation={personalInformation} />
+      <CvContainer
+        personalInformation={personalInformation}
+        experienceData={experienceData}
+      />
     </>
   );
 }
@@ -44,7 +60,13 @@ function Test() {
   return <div className="test"></div>;
 }
 
-function SideBar({ children, onPersonalInfoChange, personalInformation }) {
+function SideBar({
+  children,
+  onPersonalInfoChange,
+  personalInformation,
+  onExperienceInput,
+  experienceData,
+}) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
     <div className="side-bar">
@@ -80,7 +102,10 @@ function SideBar({ children, onPersonalInfoChange, personalInformation }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <ExperienceInput />
+          <ExperienceInput
+            onExperienceInput={onExperienceInput}
+            experienceData={experienceData}
+          />
         </Card>
         <Card
           id={'project'}
@@ -193,11 +218,14 @@ function Card({
   );
 }
 
-function CvContainer({ children, personalInformation }) {
+function CvContainer({ children, personalInformation, experienceData }) {
   return (
     <div className="cv-container">
       <TopCvContainer />
-      <CV personalInformation={personalInformation} />
+      <CV
+        personalInformation={personalInformation}
+        experienceData={experienceData}
+      />
     </div>
   );
 }
@@ -245,15 +273,15 @@ function CvCard({ heading, children }) {
   );
 }
 
-function CV({ children, personalInformation }) {
+function CV({ children, personalInformation, experienceData }) {
   return (
     <div className="cv">
       <PersonalInformation personalInformation={personalInformation} />
       <div className="cv__main">
         <div className="left">
           <CvCard heading={'Experience'}>
-            <Experience />
-            <Experience />
+            <Experience experienceData={experienceData} />
+            {/* <Experience /> */}
           </CvCard>
           <CvCard heading={'Personal Project'}>
             <PersonalProject />
@@ -340,28 +368,29 @@ function PersonalInformation({ children, personalInformation }) {
   );
 }
 
-function Experience() {
+function Experience({ experienceData }) {
   return (
     <div className="experience">
       <h5>
-        Tittle/ Position: <span>front End developer</span>
+        Tittle/ Position: <span>{experienceData.position}</span>
       </h5>
       <h6>
-        Work Space/ Company: <span>Google</span>
+        Work Space/ Company: <span>{experienceData.company}</span>
       </h6>
       <h6>
         Task/ Responsibility:
-        <span>creating UX/UI friendly webpages for organization</span>
+        <span>{experienceData.responsibility}</span>
       </h6>
       <h6 className="date">
         Year:
-        <span className="from">7/2022</span> -<span className="to">2/2023</span>
+        <span className="from">{experienceData.from.slice(0, 7)}</span> -
+        <span className="to">{experienceData.to.slice(0, 7)}</span>
       </h6>
     </div>
   );
 }
 
-function ExperienceInput() {
+function ExperienceInput({ experienceData, onExperienceInput }) {
   return (
     <div className="experience-input">
       <label htmlFor="position">Tittle /Position:</label>
@@ -370,6 +399,7 @@ function ExperienceInput() {
         name="position"
         id="Position"
         placeholder="front End developer"
+        onChange={(e) => onExperienceInput(e)}
         // onChange={(e) => onPersonalInfoChange(e)}
       />
       <label htmlFor="company">Company:</label>
@@ -378,6 +408,7 @@ function ExperienceInput() {
         name="company"
         id="company"
         placeholder="Google"
+        onChange={(e) => onExperienceInput(e)}
         // onChange={(e) => onPersonalInfoChange(e)}
       />
       <label htmlFor="responsibility">Responsibility:</label>
@@ -386,18 +417,23 @@ function ExperienceInput() {
         name="responsibility"
         id="responsibility"
         placeholder="creating UX/UI ..."
+        onChange={(e) => onExperienceInput(e)}
         // onChange={(e) => onPersonalInfoChange(e)}
       />
       <label htmlFor="startDate">From: </label>
       <input
         type="date"
-        name="start"
-        id="start"
-        value={'2024-05-20'}
-        onChange={(e) => console.log(e.target.value)}
+        name="from"
+        id="from"
+        onChange={(e) => onExperienceInput(e)}
       />
       <label htmlFor="toDate">To: </label>
-      <input type="date" name="start" id="start" />
+      <input
+        type="date"
+        name="to"
+        id="to"
+        onChange={(e) => onExperienceInput(e)}
+      />
     </div>
   );
 }
