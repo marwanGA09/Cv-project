@@ -203,7 +203,14 @@ function Card({
     <div className="card">
       <h3>{tittle}</h3>
       <p>{description}</p>
-      <div>{isCurrent && children}</div>
+      <div>
+        {isCurrent && (
+          <>
+            {children}{' '}
+            {id !== 'information' && id !== 'contact' && <button>Add</button>}
+          </>
+        )}
+      </div>
       <button
         onClick={() => {
           isCurrent ? onCurrentActive(null) : onCurrentActive(id);
@@ -268,7 +275,7 @@ function CvCard({ heading, children }) {
   return (
     <div className="cv-card">
       <h3>{heading}</h3>
-      <div> {children}</div>
+      {children}
     </div>
   );
 }
