@@ -6,10 +6,33 @@ export default function App() {
     <>
       <div className="App">
         <Navigation />
-        <SideBar />
-        <CvContainer />
+        <SideBarCvContainerGroup />
         <Footer />
       </div>
+    </>
+  );
+}
+// I created this to crease state inside app component
+function SideBarCvContainerGroup() {
+  const [personalInformation, setPersonalInformation] = useState({
+    fullName: 'Adem Kedir',
+    profession: 'Front end developer',
+    description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+          molestiae amet fuga minima corrupti maiores tempore exercitationem
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+          molestiae necessitatibus. Iusto,.`,
+  });
+
+  function handlePersonalInformation(e) {
+    setPersonalInformation((personalInformation) => {
+      return { ...personalInformation, [e.target.name]: e.target.value };
+    });
+  }
+
+  return (
+    <>
+      <SideBar onPersonalInfoChange={handlePersonalInformation} />
+      <CvContainer personalInformation={personalInformation} />
     </>
   );
 }
@@ -18,7 +41,7 @@ function Test() {
   return <div className="test"></div>;
 }
 
-function SideBar({ children }) {
+function SideBar({ children, onPersonalInfoChange }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
     <div className="side-bar">
@@ -40,7 +63,9 @@ function SideBar({ children }) {
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          <PersonalInformationInput
+            onPersonalInfoChange={onPersonalInfoChange}
+          />
         </Card>
         <Card
           id={'experience'}
@@ -172,11 +197,11 @@ function Card({
   );
 }
 
-function CvContainer({ children }) {
+function CvContainer({ children, personalInformation }) {
   return (
     <div className="cv-container">
       <TopCvContainer />
-      <CV />
+      <CV personalInformation={personalInformation} />
     </div>
   );
 }
@@ -215,10 +240,10 @@ function TopCvContainer({ children }) {
   );
 }
 
-function CV({ children }) {
+function CV({ children, personalInformation }) {
   return (
     <div className="cv">
-      <CvHeader />
+      <CvHeader personalInformation={personalInformation} />
       <div className="cv__main">
         <div className="left">
           <CvCard heading={'Experience'}>
@@ -256,18 +281,44 @@ function CV({ children }) {
   );
 }
 
-function CvHeader({ children }) {
+function PersonalInformationInput({ onPersonalInfoChange }) {
+  return (
+    <div className="personal-description-input">
+      <label htmlFor="full-name">Full name:</label>
+      <input
+        type="text"
+        name="fullName"
+        id="full-name"
+        placeholder="Adem kedir Galiyo"
+        onChange={(e) => onPersonalInfoChange(e)}
+      />
+      <label htmlFor="profession">Profession</label>{' '}
+      <input
+        type="text"
+        name="profession"
+        id="profession"
+        placeholder="Software Engineer"
+        onChange={(e) => onPersonalInfoChange(e)}
+      />
+      <label htmlFor="description">Heading Sentence</label>{' '}
+      <textarea
+        name="description"
+        id="description"
+        maxLength={300}
+        placeholder="I am dedicated ..."
+        onChange={(e) => onPersonalInfoChange(e)}
+      ></textarea>
+    </div>
+  );
+}
+
+function CvHeader({ children, personalInformation }) {
   return (
     <div className="cv__header">
       <div className="personal-description">
-        <h2>Adem kedir Galiyo</h2>
-        <h4>Back-end software engineer</h4>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
-          molestiae amet fuga minima corrupti maiores tempore exercitationem
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
-          molestiae necessitatibus. Iusto,.
-        </p>
+        <h2>{personalInformation.fullName}</h2>
+        <h4>{personalInformation.profession}</h4>
+        <p>{personalInformation.description}</p>
       </div>
       <div className="image">
         <div>
