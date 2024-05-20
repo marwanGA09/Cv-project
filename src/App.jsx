@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import Navigation from './assets/component/Navigation';
 
@@ -21,12 +22,19 @@ function SideBarCvContainerGroup() {
   });
 
   const [experienceData, setExperienceData] = useState({
-    position: 'front End developer',
-    company: 'Google',
-    responsibility: 'creating UX/UI friendly webpages for organization',
-    from: '2022-07-02',
-    to: '2023-03-27',
+    position: { a0: 'front End developer' },
+    company: { a0: 'Google' },
+    responsibility: { a0: 'creating UX/UI friendly webpages for organization' },
+    from: { a0: '2022-07-02' },
+    to: { a0: '2023-03-27' },
   });
+  // const [experienceData, setExperienceData] = useState({
+  //   position: 'front End developer',
+  //   company: 'Google',
+  //   responsibility: 'creating UX/UI friendly webpages for organization',
+  //   from: '2022-07-02',
+  //   to: '2023-03-27',
+  // });
 
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -34,9 +42,15 @@ function SideBarCvContainerGroup() {
     });
   }
 
-  function handleExperienceInfo(e) {
+  function handleExperienceInfo(e, ind) {
     setExperienceData((experienceData) => {
-      return { ...experienceData, [e.target.name]: e.target.value };
+      return {
+        ...experienceData,
+        [e.target.name]: {
+          ...experienceData[e.target.name],
+          ['a' + ind]: e.target.value,
+        },
+      };
     });
   }
 
@@ -198,7 +212,6 @@ function Card({
   onCurrentActive,
 }) {
   const isCurrent = currentActive === id;
-  const [addCount, setAddCount] = useState(1);
   return (
     <div className="card">
       <h3>{tittle}</h3>
@@ -206,13 +219,11 @@ function Card({
       <div>
         {isCurrent && (
           <>
-            {Array.from({ length: addCount }).map(() => children)}
+            {children}
 
-            {id !== 'information' && id !== 'contact' && (
-              <button onClick={() => setAddCount((addCount) => addCount + 1)}>
-                Add
-              </button>
-            )}
+            {/* {id !== 'information' && id !== 'contact' && (
+            
+            )} */}
           </>
         )}
       </div>
@@ -382,71 +393,129 @@ function PersonalInformation({ children, personalInformation }) {
 
 function Experience({ experienceData }) {
   return (
-    <div className="experience">
-      <h5>
-        Tittle/ Position: <span>{experienceData.position}</span>
-      </h5>
-      <h6>
-        Work Space/ Company: <span>{experienceData.company}</span>
-      </h6>
-      <h6>
-        Task/ Responsibility:
-        <span>{experienceData.responsibility}</span>
-      </h6>
-      <h6 className="date">
-        Year:
-        <span className="from">{experienceData.from.slice(0, 7)}</span> -
-        <span className="to">{experienceData.to.slice(0, 7)}</span>
-      </h6>
-    </div>
+    <>
+      {Object.keys(experienceData.position).map((key) => (
+        <div key={key}>
+          <div className="experience">
+            <h5>
+              Tittle/ Position:{' '}
+              <span>{experienceData.position[key] || ''}</span>
+            </h5>
+            <h6>
+              Work Space/ Company:{' '}
+              <span>{experienceData.company[key] || ''}</span>
+            </h6>
+            <h6>
+              Task/ Responsibility:
+              <span>{experienceData.responsibility[key] || ''}</span>
+            </h6>
+            <h6 className="date">
+              Year:
+              <span className="from">
+                {experienceData.from[key]?.slice(0, 7)}
+              </span>{' '}
+              -<span className="to">{experienceData.to[key]?.slice(0, 7)}</span>
+            </h6>
+          </div>
+        </div>
+      ))}
+
+      {/* {Array.from(
+        { length: Object.keys(experienceData.position).length },
+        (_, index) => (
+          <div key={index}>
+            {console.log(experienceData.position['a' + index])}
+            {experienceData.position['a' + index] && (
+              <div className="experience">
+                <h5>
+                  Tittle/ Position:{' '}
+                  <span>{experienceData.position['a' + index] || ''}</span>
+                </h5>
+                <h6>
+                  Work Space/ Company:{' '}
+                  <span>{experienceData.company['a' + index] || ''}</span>
+                </h6>
+                <h6>
+                  Task/ Responsibility:
+                  <span>
+                    {experienceData.responsibility['a' + index] || ''}
+                  </span>
+                </h6>
+                <h6 className="date">
+                  Year:
+                  <span className="from">
+                    {experienceData.from['a' + index]?.slice(0, 7)}
+                  </span>{' '}
+                  -
+                  <span className="to">
+                    {experienceData.to['a' + index]?.slice(0, 7)}
+                  </span>
+                </h6>
+              </div>
+            )}
+          </div>
+        )
+      )}{' '} */}
+    </>
   );
 }
 
 function ExperienceInput({ experienceData, onExperienceInput }) {
+  const [addCount, setAddCount] = useState(1);
   return (
-    <div className="experience-input">
-      <label htmlFor="position">Tittle /Position:</label>
-      <input
-        type="text"
-        name="position"
-        id="Position"
-        placeholder="front End developer"
-        onChange={(e) => onExperienceInput(e)}
-        // onChange={(e) => onPersonalInfoChange(e)}
-      />
-      <label htmlFor="company">Company:</label>
-      <input
-        type="text"
-        name="company"
-        id="company"
-        placeholder="Google"
-        onChange={(e) => onExperienceInput(e)}
-        // onChange={(e) => onPersonalInfoChange(e)}
-      />
-      <label htmlFor="responsibility">Responsibility:</label>
-      <input
-        type="text"
-        name="responsibility"
-        id="responsibility"
-        placeholder="creating UX/UI ..."
-        onChange={(e) => onExperienceInput(e)}
-        // onChange={(e) => onPersonalInfoChange(e)}
-      />
-      <label htmlFor="startDate">From: </label>
-      <input
-        type="date"
-        name="from"
-        id="from"
-        onChange={(e) => onExperienceInput(e)}
-      />
-      <label htmlFor="toDate">To: </label>
-      <input
-        type="date"
-        name="to"
-        id="to"
-        onChange={(e) => onExperienceInput(e)}
-      />
-    </div>
+    <>
+      {' '}
+      {Array.from({ length: addCount }, (_, index) => (
+        <div key={index}>
+          <div className="experience-input">
+            <label htmlFor="position">Tittle /Position:</label>
+            <input
+              type="text"
+              name="position"
+              id="Position"
+              placeholder="front End developer"
+              onChange={(e) => onExperienceInput(e, index)}
+              // onChange={(e) => onPersonalInfoChange(e)}
+            />
+            <label htmlFor="company">Company:</label>
+            <input
+              type="text"
+              name="company"
+              id="company"
+              placeholder="Google"
+              onChange={(e) => onExperienceInput(e, index)}
+              // onChange={(e) => onPersonalInfoChange(e)}
+            />
+            <label htmlFor="responsibility">Responsibility:</label>
+            <input
+              type="text"
+              name="responsibility"
+              id="responsibility"
+              placeholder="creating UX/UI ..."
+              onChange={(e) => onExperienceInput(e, index)}
+              // onChange={(e) => onPersonalInfoChange(e)}
+            />
+            <label htmlFor="startDate">From: </label>
+            <input
+              type="date"
+              name="from"
+              id="from"
+              onChange={(e) => onExperienceInput(e, index)}
+            />
+            <label htmlFor="toDate">To: </label>
+            <input
+              type="date"
+              name="to"
+              id="to"
+              onChange={(e) => onExperienceInput(e, index)}
+            />
+          </div>{' '}
+        </div>
+      ))}
+      <button onClick={() => setAddCount((addCount) => addCount + 1)}>
+        Add
+      </button>
+    </>
   );
 }
 
