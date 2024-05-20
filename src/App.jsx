@@ -54,6 +54,17 @@ function SideBarCvContainerGroup() {
     });
   }
 
+  function handleRemovalOfExperience(index) {
+    setExperienceData((experienceData) => {
+      delete experienceData.position['a' + index];
+      delete experienceData.company['a' + index];
+      delete experienceData.responsibility['a' + index];
+      delete experienceData.from['a' + index];
+      delete experienceData.to['a' + index];
+      return { ...experienceData };
+    });
+  }
+
   return (
     <>
       <SideBar
@@ -61,6 +72,7 @@ function SideBarCvContainerGroup() {
         personalInformation={personalInformation}
         onExperienceInput={handleExperienceInfo}
         experienceData={experienceData}
+        onDelete={handleRemovalOfExperience}
       />
       <CvContainer
         personalInformation={personalInformation}
@@ -80,6 +92,7 @@ function SideBar({
   personalInformation,
   onExperienceInput,
   experienceData,
+  onDelete,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -119,6 +132,7 @@ function SideBar({
           <ExperienceInput
             onExperienceInput={onExperienceInput}
             experienceData={experienceData}
+            onDelete={onDelete}
           />
         </Card>
         <Card
@@ -460,7 +474,7 @@ function Experience({ experienceData }) {
   );
 }
 
-function ExperienceInput({ experienceData, onExperienceInput }) {
+function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
   const [addCount, setAddCount] = useState(1);
   return (
     <>
@@ -512,6 +526,14 @@ function ExperienceInput({ experienceData, onExperienceInput }) {
           </div>{' '}
         </div>
       ))}
+      <button
+        onClick={() => {
+          addCount !== 1 && setAddCount((addCount) => addCount - 1);
+          addCount !== 1 && onDelete(addCount);
+        }}
+      >
+        del
+      </button>
       <button onClick={() => setAddCount((addCount) => addCount + 1)}>
         Add
       </button>
