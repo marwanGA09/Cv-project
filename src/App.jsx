@@ -198,7 +198,7 @@ function Card({
   onCurrentActive,
 }) {
   const isCurrent = currentActive === id;
-
+  const [addCount, setAddCount] = useState(1);
   return (
     <div className="card">
       <h3>{tittle}</h3>
@@ -206,8 +206,13 @@ function Card({
       <div>
         {isCurrent && (
           <>
-            {children}{' '}
-            {id !== 'information' && id !== 'contact' && <button>Add</button>}
+            {Array.from({ length: addCount }).map(() => children)}
+
+            {id !== 'information' && id !== 'contact' && (
+              <button onClick={() => setAddCount((addCount) => addCount + 1)}>
+                Add
+              </button>
+            )}
           </>
         )}
       </div>
