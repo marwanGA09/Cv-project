@@ -412,11 +412,11 @@ function Experience({ experienceData }) {
         <div key={key}>
           <div className="experience">
             <h5>
-              Tittle/ Position:{' '}
+              Tittle/ Position:
               <span>{experienceData.position[key] || ''}</span>
             </h5>
             <h6>
-              Work Space/ Company:{' '}
+              Work Space/ Company:
               <span>{experienceData.company[key] || ''}</span>
             </h6>
             <h6>
@@ -427,7 +427,7 @@ function Experience({ experienceData }) {
               Year:
               <span className="from">
                 {experienceData.from[key]?.slice(0, 7)}
-              </span>{' '}
+              </span>
               -<span className="to">{experienceData.to[key]?.slice(0, 7)}</span>
             </h6>
           </div>
@@ -442,11 +442,11 @@ function Experience({ experienceData }) {
             {experienceData.position['a' + index] && (
               <div className="experience">
                 <h5>
-                  Tittle/ Position:{' '}
+                  Tittle/ Position:
                   <span>{experienceData.position['a' + index] || ''}</span>
                 </h5>
                 <h6>
-                  Work Space/ Company:{' '}
+                  Work Space/ Company:
                   <span>{experienceData.company['a' + index] || ''}</span>
                 </h6>
                 <h6>
@@ -459,7 +459,7 @@ function Experience({ experienceData }) {
                   Year:
                   <span className="from">
                     {experienceData.from['a' + index]?.slice(0, 7)}
-                  </span>{' '}
+                  </span>
                   -
                   <span className="to">
                     {experienceData.to['a' + index]?.slice(0, 7)}
@@ -469,7 +469,7 @@ function Experience({ experienceData }) {
             )}
           </div>
         )
-      )}{' '} */}
+      )} */}
     </>
   );
 }
@@ -478,7 +478,6 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
   const [addCount, setAddCount] = useState(1);
   return (
     <>
-      {' '}
       {Array.from({ length: addCount }, (_, index) => (
         <div key={index}>
           <div className="experience-input">
@@ -523,13 +522,13 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               id="to"
               onChange={(e) => onExperienceInput(e, index)}
             />
-          </div>{' '}
+          </div>
         </div>
       ))}
       <button
         onClick={() => {
           addCount !== 1 && setAddCount((addCount) => addCount - 1);
-          addCount !== 1 && onDelete(addCount);
+          addCount !== 1 && onDelete(addCount - 1);
         }}
       >
         del
