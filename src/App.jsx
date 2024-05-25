@@ -21,6 +21,8 @@ function SideBarCvContainerGroup() {
     description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
   });
 
+  // *********
+  // *********
   const initialExperience = JSON.parse(
     getLocalStorage('localExperienceData')
   ) || {
@@ -32,6 +34,7 @@ function SideBarCvContainerGroup() {
   };
 
   // *********
+  // *********
   const initialPersonalProject = JSON.parse(
     getLocalStorage('localPersonalProject')
   ) || {
@@ -40,10 +43,25 @@ function SideBarCvContainerGroup() {
     projectURL: { a0: 'https//:' },
   };
 
+  // *********
+  // *********
+  const initialEducation = JSON.parse(
+    getLocalStorage('localEducationData')
+  ) || {
+    program: { a0: 'Software engineering' },
+    level: { a0: 'bachelor degree' },
+    institution: { a0: 'Haramaya University' },
+    from: { a0: '2022-07-02' },
+    to: { a0: '2023-03-27' },
+  };
+
+  // USE STATE
   const [experienceData, setExperienceData] = useState(initialExperience);
   const [personalProject, setPersonalProject] = useState(
     initialPersonalProject
   );
+  const [education, setEducation] = useState(initialEducation);
+
   // *******
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -98,22 +116,49 @@ function SideBarCvContainerGroup() {
       return { ...personalProject };
     });
   }
+
+  // *******
+  function handleEducation(e, ind) {
+    setEducation((education) => {
+      const temp = {
+        ...education,
+        [e.target.name]: {
+          ...education[e.target.name],
+          ['a' + ind]: e.target.value,
+        },
+      };
+      setLocalStorage('localEducationData', JSON.stringify(education));
+      return temp;
+    });
+  }
+
+  function handleRemovalEducation(index) {
+    setEducation((education) => {
+      delete education.program['a' + index];
+      delete education.level['a' + index];
+      delete education.institution['a' + index];
+      delete education.from['a' + index];
+      delete education.to['a' + index];
+      return { ...education };
+    });
+  }
+
   return (
     <>
       <SideBar
-        personalInformation={personalInformation}
         onPersonalInfoChange={handlePersonalInformation}
-        experienceData={experienceData}
-        onEducationData={handleExperienceInfo}
+        onExperienceInput={handleExperienceInfo}
         onExperienceDelete={handleRemovalOfExperience}
-        personalProject={personalProject}
         onPersonalProject={handlePersonalProject}
         onPersonalProjectDelete={handleRemovalOfPersonalProject}
+        onEducationData={handleEducation}
+        onEducationDelete={handleRemovalEducation}
       />
       <CvContainer
         personalInformation={personalInformation}
         experienceData={experienceData}
         personalProject={personalProject}
+        educationData={education}
       />
     </>
   );
@@ -126,14 +171,15 @@ function Test() {
 function SideBar({
   children,
   onPersonalInfoChange,
-  personalInformation,
+
   onExperienceInput,
-  experienceData,
   onExperienceDelete,
 
-  personalProject,
   onPersonalProject,
   onPersonalProjectDelete,
+
+  onEducationData,
+  onEducationDelete,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -158,7 +204,6 @@ function SideBar({
         >
           <PersonalInformationInput
             onPersonalInfoChange={onPersonalInfoChange}
-            personalInformation={personalInformation}
           />
         </Card>
         <Card
@@ -172,7 +217,6 @@ function SideBar({
         >
           <ExperienceInput
             onExperienceInput={onExperienceInput}
-            experienceData={experienceData}
             onExperienceDelete={onExperienceDelete}
           />
         </Card>
@@ -188,7 +232,6 @@ function SideBar({
           {/* personalProject, onPersonalProject, onPersonalProjectDelete, */}
           <PersonalProjectInput
             onPersonalProject={onPersonalProject}
-            personalProject={personalProject}
             onPersonalProjectDelete={onPersonalProjectDelete}
           />
         </Card>
@@ -201,7 +244,11 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <EducationInput />
+          {/*  onEducationData, onEducationDelete  */}
+          <EducationInput
+            onEducationData={onEducationData}
+            onEducationDelete={onEducationDelete}
+          />
         </Card>
         <Card
           id={'achievement'}
@@ -306,6 +353,7 @@ function CvContainer({
   personalInformation,
   experienceData,
   personalProject,
+  educationData,
 }) {
   return (
     <div className="cv-container">
@@ -314,6 +362,7 @@ function CvContainer({
         personalInformation={personalInformation}
         experienceData={experienceData}
         personalProject={personalProject}
+        educationData={educationData}
       />
     </div>
   );
@@ -368,6 +417,7 @@ function CV({
   personalInformation,
   experienceData,
   personalProject,
+  educationData,
 }) {
   return (
     <div className="cv">
@@ -382,8 +432,7 @@ function CV({
             <PersonalProject personalProject={personalProject} />
           </CvCard>
           <CvCard heading={'Education Level'}>
-            <Education />
-            <Education />
+            <Education educationData={educationData} />
           </CvCard>
           <CvCard heading={'Personal Achievement'}>
             <PersonalAchievement />
@@ -408,10 +457,7 @@ function CV({
   );
 }
 
-function PersonalInformationInput({
-  onPersonalInfoChange,
-  personalInformation,
-}) {
+function PersonalInformationInput({ onPersonalInfoChange }) {
   return (
     <div className="personal-description-input">
       <label htmlFor="full-name">Full name:</label>
@@ -497,11 +543,7 @@ function Experience({ experienceData }) {
   );
 }
 
-function ExperienceInput({
-  experienceData,
-  onExperienceInput,
-  onExperienceDelete,
-}) {
+function ExperienceInput({ onExperienceInput, onExperienceDelete }) {
   const localExperienceData = JSON.parse(
     getLocalStorage('localExperienceData')
   );
@@ -603,11 +645,7 @@ function PersonalProject({ personalProject }) {
   );
 }
 
-function PersonalProjectInput({
-  personalProject,
-  onPersonalProject,
-  onPersonalProjectDelete,
-}) {
+function PersonalProjectInput({ onPersonalProject, onPersonalProjectDelete }) {
   const localExperienceData = JSON.parse(
     getLocalStorage('localPersonalProject')
   );
@@ -671,28 +709,34 @@ function PersonalProjectInput({
   );
 }
 
-function Education() {
+function Education({ educationData }) {
+  console.log(educationData);
   return (
-    <div className="education">
-      <h5>
-        Study Program: <span>Software engineering</span>
-      </h5>
-      <h6>
-        Study Level:
-        <span>bachelor degree</span>
-      </h6>
-      <h6>
-        Institution :<span>Haramaya University</span>
-      </h6>
-      <h6 className="date">
-        Year:
-        <span className="from">7/2022</span> -<span className="to">2/2023</span>
-      </h6>
-    </div>
+    <>
+      {Object.keys(educationData.program).map((key) => (
+        <div key={key} className="education">
+          <h5>
+            Study Program: <span>{educationData.program[key] || '...'}</span>
+          </h5>
+          <h6>
+            Study Level:
+            <span>{educationData.level[key] || '...'}</span>
+          </h6>
+          <h6>
+            Institution :<span>{educationData.institution[key] || '...'}</span>
+          </h6>
+          <h6 className="date">
+            Year:
+            <span className="from">{educationData.from[key] || '...'}</span> -
+            <span className="to">{educationData.to[key] || '...'}</span>
+          </h6>
+        </div>
+      ))}
+    </>
   );
 }
 
-function EducationInput({ eduactionData, onEducationData, onEducationDelete }) {
+function EducationInput({ onEducationData, onEducationDelete }) {
   const localEducationData = JSON.parse(getLocalStorage('localEducationData'));
 
   let number = localEducationData
