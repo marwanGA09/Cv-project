@@ -1,6 +1,6 @@
-import React from 'react';
 import { useState } from 'react';
 import Navigation from './assets/component/Navigation';
+import setLocalStorage, { getLocalStorage } from './setLocalStorage';
 
 export default function App() {
   return (
@@ -21,20 +21,17 @@ function SideBarCvContainerGroup() {
     description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
   });
 
-  const [experienceData, setExperienceData] = useState({
+  const initialExperience = JSON.parse(
+    getLocalStorage('localExperienceData')
+  ) || {
     position: { a0: 'front End developer' },
     company: { a0: 'Google' },
     responsibility: { a0: 'creating UX/UI friendly webpages for organization' },
     from: { a0: '2022-07-02' },
     to: { a0: '2023-03-27' },
-  });
-  // const [experienceData, setExperienceData] = useState({
-  //   position: 'front End developer',
-  //   company: 'Google',
-  //   responsibility: 'creating UX/UI friendly webpages for organization',
-  //   from: '2022-07-02',
-  //   to: '2023-03-27',
-  // });
+  };
+
+  const [experienceData, setExperienceData] = useState(initialExperience);
 
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -44,13 +41,15 @@ function SideBarCvContainerGroup() {
 
   function handleExperienceInfo(e, ind) {
     setExperienceData((experienceData) => {
-      return {
+      const temp = {
         ...experienceData,
         [e.target.name]: {
           ...experienceData[e.target.name],
           ['a' + ind]: e.target.value,
         },
       };
+      setLocalStorage('localExperienceData', JSON.stringify(experienceData));
+      return temp;
     });
   }
 
@@ -413,69 +412,45 @@ function Experience({ experienceData }) {
           <div className="experience">
             <h5>
               Tittle/ Position:
-              <span>{experienceData.position[key] || ''}</span>
+              <span>{experienceData.position[key] || 'NO Position'}</span>
             </h5>
             <h6>
               Work Space/ Company:
-              <span>{experienceData.company[key] || ''}</span>
+              <span>{experienceData.company[key] || 'NO Company'}</span>
             </h6>
             <h6>
               Task/ Responsibility:
-              <span>{experienceData.responsibility[key] || ''}</span>
+              <span>
+                {experienceData.responsibility[key] || 'NO Responsibility'}
+              </span>
             </h6>
             <h6 className="date">
               Year:
               <span className="from">
-                {experienceData.from[key]?.slice(0, 7)}
+                {experienceData.from[key]?.slice(0, 7) || 'NO Date'}
               </span>
-              -<span className="to">{experienceData.to[key]?.slice(0, 7)}</span>
+              -
+              <span className="to">
+                {experienceData.to[key]?.slice(0, 7) || 'NO Date'}
+              </span>
             </h6>
           </div>
         </div>
       ))}
-
-      {/* {Array.from(
-        { length: Object.keys(experienceData.position).length },
-        (_, index) => (
-          <div key={index}>
-            {console.log(experienceData.position['a' + index])}
-            {experienceData.position['a' + index] && (
-              <div className="experience">
-                <h5>
-                  Tittle/ Position:
-                  <span>{experienceData.position['a' + index] || ''}</span>
-                </h5>
-                <h6>
-                  Work Space/ Company:
-                  <span>{experienceData.company['a' + index] || ''}</span>
-                </h6>
-                <h6>
-                  Task/ Responsibility:
-                  <span>
-                    {experienceData.responsibility['a' + index] || ''}
-                  </span>
-                </h6>
-                <h6 className="date">
-                  Year:
-                  <span className="from">
-                    {experienceData.from['a' + index]?.slice(0, 7)}
-                  </span>
-                  -
-                  <span className="to">
-                    {experienceData.to['a' + index]?.slice(0, 7)}
-                  </span>
-                </h6>
-              </div>
-            )}
-          </div>
-        )
-      )} */}
     </>
   );
 }
 
 function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
-  const [addCount, setAddCount] = useState(1);
+  const localExperienceData = JSON.parse(
+    getLocalStorage('localExperienceData')
+  );
+  let number = localExperienceData
+    ? Object.keys(localExperienceData.position).length
+    : 1;
+
+  const [addCount, setAddCount] = useState(number);
+
   return (
     <>
       {Array.from({ length: addCount }, (_, index) => (
@@ -486,7 +461,8 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               type="text"
               name="position"
               id="Position"
-              placeholder="front End developer"
+              placeholder={localExperienceData?.position['a' + index] || ''}
+              // value={localExperienceData?.position.a0 || ''}
               onChange={(e) => onExperienceInput(e, index)}
               // onChange={(e) => onPersonalInfoChange(e)}
             />
@@ -495,7 +471,7 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               type="text"
               name="company"
               id="company"
-              placeholder="Google"
+              placeholder={localExperienceData?.company['a' + index] || ''}
               onChange={(e) => onExperienceInput(e, index)}
               // onChange={(e) => onPersonalInfoChange(e)}
             />
@@ -504,7 +480,9 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               type="text"
               name="responsibility"
               id="responsibility"
-              placeholder="creating UX/UI ..."
+              placeholder={
+                localExperienceData?.responsibility['a' + index] || ''
+              }
               onChange={(e) => onExperienceInput(e, index)}
               // onChange={(e) => onPersonalInfoChange(e)}
             />
@@ -513,6 +491,7 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               type="date"
               name="from"
               id="from"
+              placeholder={localExperienceData?.from['a' + index] || ''}
               onChange={(e) => onExperienceInput(e, index)}
             />
             <label htmlFor="toDate">To: </label>
@@ -520,21 +499,26 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               type="date"
               name="to"
               id="to"
+              placeholder={localExperienceData?.to['a' + index] || ''}
               onChange={(e) => onExperienceInput(e, index)}
             />
           </div>
         </div>
       ))}
       <button
+        className="del-btn"
         onClick={() => {
           addCount !== 1 && setAddCount((addCount) => addCount - 1);
           addCount !== 1 && onDelete(addCount - 1);
         }}
       >
-        del
+        🧹
       </button>
-      <button onClick={() => setAddCount((addCount) => addCount + 1)}>
-        Add
+      <button
+        className="add-btn"
+        onClick={() => setAddCount((addCount) => addCount + 1)}
+      >
+        ✚
       </button>
     </>
   );
