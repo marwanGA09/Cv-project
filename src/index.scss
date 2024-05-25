@@ -479,12 +479,14 @@ body {
 // STYLE INPUT COMPONENT
 
 .personal-description-input,
-.experience-input {
+.experience-input,
+.personal-project-input {
   background-color: #dceeff;
   padding: 1rem;
   display: grid;
   grid-template-columns: max-content 1fr;
   gap: 0.4rem;
+  margin: 0.3rem;
 
   input,
   textarea {

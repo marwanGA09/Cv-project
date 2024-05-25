@@ -72,6 +72,9 @@ function SideBarCvContainerGroup() {
         onExperienceInput={handleExperienceInfo}
         experienceData={experienceData}
         onDelete={handleRemovalOfExperience}
+        onPersonalProject={onPersonalProject}
+        personalProjectData={personalProjectData}
+        onPersonalProjectDelete={onPersonalProjectDelete}
       />
       <CvContainer
         personalInformation={personalInformation}
@@ -92,6 +95,10 @@ function SideBar({
   onExperienceInput,
   experienceData,
   onDelete,
+
+  personalProjectData,
+  onPersonalProject,
+  onPersonalProjectDelete,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -143,7 +150,12 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          {/* personalProjectData, onPersonalProject, onPersonalProjectDelete, */}
+          <PersonalProjectInput
+            onPersonalProject={onPersonalProject}
+            personalProjectData={personalProjectData}
+            onPersonalProjectDelete={onPersonalProjectDelete}
+          />
         </Card>
         <Card
           id={'education'}
@@ -445,6 +457,7 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
   const localExperienceData = JSON.parse(
     getLocalStorage('localExperienceData')
   );
+
   let number = localExperienceData
     ? Object.keys(localExperienceData.position).length
     : 1;
@@ -462,9 +475,7 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               name="position"
               id="Position"
               placeholder={localExperienceData?.position['a' + index] || ''}
-              // value={localExperienceData?.position.a0 || ''}
               onChange={(e) => onExperienceInput(e, index)}
-              // onChange={(e) => onPersonalInfoChange(e)}
             />
             <label htmlFor="company">Company:</label>
             <input
@@ -473,7 +484,6 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
               id="company"
               placeholder={localExperienceData?.company['a' + index] || ''}
               onChange={(e) => onExperienceInput(e, index)}
-              // onChange={(e) => onPersonalInfoChange(e)}
             />
             <label htmlFor="responsibility">Responsibility:</label>
             <input
@@ -484,7 +494,6 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
                 localExperienceData?.responsibility['a' + index] || ''
               }
               onChange={(e) => onExperienceInput(e, index)}
-              // onChange={(e) => onPersonalInfoChange(e)}
             />
             <label htmlFor="startDate">From: </label>
             <input
@@ -510,6 +519,74 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
         onClick={() => {
           addCount !== 1 && setAddCount((addCount) => addCount - 1);
           addCount !== 1 && onDelete(addCount - 1);
+        }}
+      >
+        🧹
+      </button>
+      <button
+        className="add-btn"
+        onClick={() => setAddCount((addCount) => addCount + 1)}
+      >
+        ✚
+      </button>
+    </>
+  );
+}
+
+function PersonalProjectInput({
+  personalProjectData,
+  onPersonalProject,
+  onPersonalProjectDelete,
+}) {
+  const localExperienceData = JSON.parse(
+    getLocalStorage('localPersonalProjectData')
+  );
+
+  let number = localExperienceData
+    ? Object.keys(localExperienceData.projectName).length
+    : 1;
+
+  const [addCount, setAddCount] = useState(number);
+
+  return (
+    <>
+      {Array.from({ length: addCount }, (_, index) => (
+        <div key={index}>
+          <div className="personal-project-input">
+            <label htmlFor="projectName">Project Name:</label>
+            <input
+              type="text"
+              name="projectName"
+              id="projectName"
+              placeholder={localExperienceData?.projectName['a' + index] || ''}
+              onChange={(e) => onPersonalProject(e, index)}
+            />
+            <label htmlFor="projectDescription">Project Descriptor:</label>
+            <input
+              type="text"
+              name="projectDescription"
+              id="projectDescription"
+              placeholder={
+                localExperienceData?.projectDescription['a' + index] || ''
+              }
+              onChange={(e) => onPersonalProject(e, index)}
+            />
+            <label htmlFor="projectURL">Project Link:</label>
+            <input
+              type="url"
+              name="projectURL"
+              id="projectURL"
+              placeholder={localExperienceData?.projectURL['a' + index] || ''}
+              onChange={(e) => onPersonalProject(e, index)}
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        className="del-btn"
+        onClick={() => {
+          addCount !== 1 && setAddCount((addCount) => addCount - 1);
+          addCount !== 1 && onPersonalProjectDelete(addCount - 1);
         }}
       >
         🧹
