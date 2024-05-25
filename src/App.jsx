@@ -104,7 +104,7 @@ function SideBarCvContainerGroup() {
         personalInformation={personalInformation}
         onPersonalInfoChange={handlePersonalInformation}
         experienceData={experienceData}
-        onExperienceInput={handleExperienceInfo}
+        onEducationData={handleExperienceInfo}
         onExperienceDelete={handleRemovalOfExperience}
         personalProject={personalProject}
         onPersonalProject={handlePersonalProject}
@@ -201,7 +201,7 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          <EducationInput />
         </Card>
         <Card
           id={'achievement'}
@@ -689,6 +689,82 @@ function Education() {
         <span className="from">7/2022</span> -<span className="to">2/2023</span>
       </h6>
     </div>
+  );
+}
+
+function EducationInput({ eduactionData, onEducationData, onEducationDelete }) {
+  const localEducationData = JSON.parse(getLocalStorage('localEducationData'));
+
+  let number = localEducationData
+    ? Object.keys(localEducationData.program).length
+    : 1;
+
+  const [addCount, setAddCount] = useState(number);
+
+  return (
+    <>
+      {Array.from({ length: addCount }, (_, index) => (
+        <div key={index}>
+          <div className="education-input">
+            <label htmlFor="program">Study Program:</label>
+            <input
+              type="text"
+              name="program"
+              id="program"
+              placeholder={localEducationData?.program['a' + index] || ''}
+              onChange={(e) => onEducationData(e, index)}
+            />
+            <label htmlFor="level">Study Level:</label>
+            <input
+              type="text"
+              name="level"
+              id="level"
+              placeholder={localEducationData?.level['a' + index] || ''}
+              onChange={(e) => onEducationData(e, index)}
+            />
+            <label htmlFor="institution">Institution:</label>
+            <input
+              type="text"
+              name="institution"
+              id="institution"
+              placeholder={localEducationData?.institution['a' + index] || ''}
+              onChange={(e) => onEducationData(e, index)}
+            />
+            <label htmlFor="from">From : </label>
+            <input
+              type="date"
+              name="from"
+              id="from"
+              placeholder={localEducationData?.from['a' + index] || ''}
+              onChange={(e) => onEducationData(e, index)}
+            />
+            <label htmlFor="to">To: </label>
+            <input
+              type="date"
+              name="to"
+              id="to"
+              placeholder={localEducationData?.to['a' + index] || ''}
+              onChange={(e) => onEducationData(e, index)}
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        className="del-btn"
+        onClick={() => {
+          addCount !== 1 && setAddCount((addCount) => addCount - 1);
+          addCount !== 1 && onEducationDelete(addCount - 1);
+        }}
+      >
+        🧹
+      </button>
+      <button
+        className="add-btn"
+        onClick={() => setAddCount((addCount) => addCount + 1)}
+      >
+        ✚
+      </button>
+    </>
   );
 }
 
