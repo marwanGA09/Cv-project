@@ -31,14 +31,26 @@ function SideBarCvContainerGroup() {
     to: { a0: '2023-03-27' },
   };
 
-  const [experienceData, setExperienceData] = useState(initialExperience);
+  // *********
+  const initialPersonalProject = JSON.parse(
+    getLocalStorage('localPersonalProject')
+  ) || {
+    projectName: { a0: 'CV project creator' },
+    projectDescription: { a0: 'Create cv dynamically' },
+    projectURL: { a0: 'https//:' },
+  };
 
+  const [experienceData, setExperienceData] = useState(initialExperience);
+  const [personalProject, setPersonalProject] = useState(
+    initialPersonalProject
+  );
+  // *******
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
       return { ...personalInformation, [e.target.name]: e.target.value };
     });
   }
-
+  // *******
   function handleExperienceInfo(e, ind) {
     setExperienceData((experienceData) => {
       const temp = {
@@ -63,22 +75,45 @@ function SideBarCvContainerGroup() {
       return { ...experienceData };
     });
   }
+  // *******
+  function handlePersonalProject(e, ind) {
+    setPersonalProject((personalProject) => {
+      const temp = {
+        ...personalProject,
+        [e.target.name]: {
+          ...personalProject[e.target.name],
+          ['a' + ind]: e.target.value,
+        },
+      };
+      setLocalStorage('localPersonalProject', JSON.stringify(personalProject));
+      return temp;
+    });
+  }
 
+  function handleRemovalOfPersonalProject(index) {
+    setPersonalProject((personalProject) => {
+      delete personalProject.projectName['a' + index];
+      delete personalProject.projectDescription['a' + index];
+      delete personalProject.projectURL['a' + index];
+      return { ...personalProject };
+    });
+  }
   return (
     <>
       <SideBar
-        onPersonalInfoChange={handlePersonalInformation}
         personalInformation={personalInformation}
-        onExperienceInput={handleExperienceInfo}
+        onPersonalInfoChange={handlePersonalInformation}
         experienceData={experienceData}
-        onDelete={handleRemovalOfExperience}
-        onPersonalProject={onPersonalProject}
-        personalProjectData={personalProjectData}
-        onPersonalProjectDelete={onPersonalProjectDelete}
+        onExperienceInput={handleExperienceInfo}
+        onExperienceDelete={handleRemovalOfExperience}
+        personalProject={personalProject}
+        onPersonalProject={handlePersonalProject}
+        onPersonalProjectDelete={handleRemovalOfPersonalProject}
       />
       <CvContainer
         personalInformation={personalInformation}
         experienceData={experienceData}
+        personalProject={personalProject}
       />
     </>
   );
@@ -94,9 +129,9 @@ function SideBar({
   personalInformation,
   onExperienceInput,
   experienceData,
-  onDelete,
+  onExperienceDelete,
 
-  personalProjectData,
+  personalProject,
   onPersonalProject,
   onPersonalProjectDelete,
 }) {
@@ -138,7 +173,7 @@ function SideBar({
           <ExperienceInput
             onExperienceInput={onExperienceInput}
             experienceData={experienceData}
-            onDelete={onDelete}
+            onExperienceDelete={onExperienceDelete}
           />
         </Card>
         <Card
@@ -150,10 +185,10 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {/* personalProjectData, onPersonalProject, onPersonalProjectDelete, */}
+          {/* personalProject, onPersonalProject, onPersonalProjectDelete, */}
           <PersonalProjectInput
             onPersonalProject={onPersonalProject}
-            personalProjectData={personalProjectData}
+            personalProject={personalProject}
             onPersonalProjectDelete={onPersonalProjectDelete}
           />
         </Card>
@@ -266,13 +301,19 @@ function Card({
   );
 }
 
-function CvContainer({ children, personalInformation, experienceData }) {
+function CvContainer({
+  children,
+  personalInformation,
+  experienceData,
+  personalProject,
+}) {
   return (
     <div className="cv-container">
       <TopCvContainer />
       <CV
         personalInformation={personalInformation}
         experienceData={experienceData}
+        personalProject={personalProject}
       />
     </div>
   );
@@ -292,6 +333,7 @@ function TopCvContainer({ children }) {
   return (
     <div className="top">
       <p>Name: merwan</p>
+      <button onClick={() => localStorage.clear()}>clear Local</button>
       <div>
         <label htmlFor="font">
           Font-style:
@@ -321,7 +363,12 @@ function CvCard({ heading, children }) {
   );
 }
 
-function CV({ children, personalInformation, experienceData }) {
+function CV({
+  children,
+  personalInformation,
+  experienceData,
+  personalProject,
+}) {
   return (
     <div className="cv">
       <PersonalInformation personalInformation={personalInformation} />
@@ -332,8 +379,7 @@ function CV({ children, personalInformation, experienceData }) {
             {/* <Experience /> */}
           </CvCard>
           <CvCard heading={'Personal Project'}>
-            <PersonalProject />
-            <PersonalProject />
+            <PersonalProject personalProject={personalProject} />
           </CvCard>
           <CvCard heading={'Education Level'}>
             <Education />
@@ -420,40 +466,42 @@ function Experience({ experienceData }) {
   return (
     <>
       {Object.keys(experienceData.position).map((key) => (
-        <div key={key}>
-          <div className="experience">
-            <h5>
-              Tittle/ Position:
-              <span>{experienceData.position[key] || 'NO Position'}</span>
-            </h5>
-            <h6>
-              Work Space/ Company:
-              <span>{experienceData.company[key] || 'NO Company'}</span>
-            </h6>
-            <h6>
-              Task/ Responsibility:
-              <span>
-                {experienceData.responsibility[key] || 'NO Responsibility'}
-              </span>
-            </h6>
-            <h6 className="date">
-              Year:
-              <span className="from">
-                {experienceData.from[key]?.slice(0, 7) || 'NO Date'}
-              </span>
-              -
-              <span className="to">
-                {experienceData.to[key]?.slice(0, 7) || 'NO Date'}
-              </span>
-            </h6>
-          </div>
+        <div key={key} className="experience">
+          <h5>
+            Tittle/ Position:
+            <span>{experienceData.position[key] || 'NO Position'}</span>
+          </h5>
+          <h6>
+            Work Space/ Company:
+            <span>{experienceData.company[key] || 'NO Company'}</span>
+          </h6>
+          <h6>
+            Task/ Responsibility:
+            <span>
+              {experienceData.responsibility[key] || 'NO Responsibility'}
+            </span>
+          </h6>
+          <h6 className="date">
+            Year:
+            <span className="from">
+              {experienceData.from[key]?.slice(0, 7) || 'NO Date'}
+            </span>
+            -
+            <span className="to">
+              {experienceData.to[key]?.slice(0, 7) || 'NO Date'}
+            </span>
+          </h6>
         </div>
       ))}
     </>
   );
 }
 
-function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
+function ExperienceInput({
+  experienceData,
+  onExperienceInput,
+  onExperienceDelete,
+}) {
   const localExperienceData = JSON.parse(
     getLocalStorage('localExperienceData')
   );
@@ -518,7 +566,7 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
         className="del-btn"
         onClick={() => {
           addCount !== 1 && setAddCount((addCount) => addCount - 1);
-          addCount !== 1 && onDelete(addCount - 1);
+          addCount !== 1 && onExperienceDelete(addCount - 1);
         }}
       >
         🧹
@@ -533,13 +581,35 @@ function ExperienceInput({ experienceData, onExperienceInput, onDelete }) {
   );
 }
 
+function PersonalProject({ personalProject }) {
+  return (
+    <>
+      {Object.keys(personalProject.projectName).map((key) => (
+        <div key={key} className="personal-project">
+          <h5>
+            Project name: <span>{personalProject.projectName[key] || ''}</span>
+          </h5>
+          <h6>
+            description:
+            <span>{personalProject.projectDescription[key] || ''}</span>
+          </h6>
+          <a href="#" target="_black">
+            <span>🐈</span>
+            {personalProject.projectURL[key] || ''}
+          </a>
+        </div>
+      ))}
+    </>
+  );
+}
+
 function PersonalProjectInput({
-  personalProjectData,
+  personalProject,
   onPersonalProject,
   onPersonalProjectDelete,
 }) {
   const localExperienceData = JSON.parse(
-    getLocalStorage('localPersonalProjectData')
+    getLocalStorage('localPersonalProject')
   );
 
   let number = localExperienceData
@@ -598,27 +668,6 @@ function PersonalProjectInput({
         ✚
       </button>
     </>
-  );
-}
-
-function PersonalProject() {
-  return (
-    <div className="personal-project">
-      <h5>
-        Project name: <span>Weather App</span>
-      </h5>
-      <h6>
-        description:
-        <span>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo
-          mollitia quod esse repellat, sed, amet officiis, molestias quibusdam
-          labor.
-        </span>
-      </h6>
-      <a href="#" target="_black">
-        <span>🐈</span> Github
-      </a>
-    </div>
   );
 }
 
