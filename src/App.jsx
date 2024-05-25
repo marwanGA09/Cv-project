@@ -259,7 +259,9 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          {/* onPersonalAchievement,
+  onPersonalAchievementDelete, */}
+          <PersonalAchievementInput />
         </Card>
         <Card
           id={'contact'}
@@ -812,6 +814,94 @@ function EducationInput({ onEducationData, onEducationDelete }) {
   );
 }
 
+function PersonalAchievement() {
+  return (
+    <div className="achievement">
+      <h5>
+        Tittle: <span>International Coding Competition</span>
+      </h5>
+      <h6>
+        Description:
+        <span>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae,
+          nostrum, fugit facere quo tenetur corriciis natus reiciendis!
+        </span>
+      </h6>
+      <h6 className="date">
+        Year:
+        <span className="from">7/2022</span>
+      </h6>
+    </div>
+  );
+}
+
+function PersonalAchievementInput({
+  onPersonalAchievement,
+  onPersonalAchievementDelete,
+}) {
+  const personalAchievement = JSON.parse(
+    getLocalStorage('localPersonalAchievement')
+  );
+
+  let number = personalAchievement
+    ? Object.keys(personalAchievement.program).length
+    : 1;
+
+  const [addCount, setAddCount] = useState(number);
+
+  return (
+    <>
+      {Array.from({ length: addCount }, (_, index) => (
+        <div key={index}>
+          <div className="personal-achievement-input">
+            <label htmlFor="tittle">Tittle:</label>
+            <input
+              type="text"
+              name="tittle"
+              id="tittle"
+              placeholder={personalAchievement?.program['a' + index] || ''}
+              onChange={(e) => onPersonalAchievement(e, index)}
+            />
+
+            <label htmlFor="description">Description:</label>
+            <textarea
+              type="text"
+              name="description"
+              id="description"
+              placeholder={personalAchievement?.level['a' + index] || ''}
+              onChange={(e) => onPersonalAchievement(e, index)}
+            />
+
+            <label htmlFor="time">Year:</label>
+            <input
+              type="date"
+              name="time"
+              id="time"
+              placeholder={personalAchievement?.from['a' + index] || ''}
+              onChange={(e) => onPersonalAchievement(e, index)}
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        className="del-btn"
+        onClick={() => {
+          addCount !== 1 && setAddCount((addCount) => addCount - 1);
+          addCount !== 1 && onPersonalAchievementDelete(addCount - 1);
+        }}
+      >
+        🧹
+      </button>
+      <button
+        className="add-btn"
+        onClick={() => setAddCount((addCount) => addCount + 1)}
+      >
+        ✚
+      </button>
+    </>
+  );
+}
+
 function SkillSet() {
   return (
     <div className="skills">
@@ -857,27 +947,6 @@ function Language() {
         <span>Afan Oromo</span>:<span>Bilingual</span>
       </li>
     </ul>
-  );
-}
-
-function PersonalAchievement() {
-  return (
-    <div className="achievement">
-      <h5>
-        Tittle: <span>International Coding Competition</span>
-      </h5>
-      <h6>
-        Description:
-        <span>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae,
-          nostrum, fugit facere quo tenetur corriciis natus reiciendis!
-        </span>
-      </h6>
-      <h6 className="date">
-        Year:
-        <span className="from">7/2022</span>
-      </h6>
-    </div>
   );
 }
 

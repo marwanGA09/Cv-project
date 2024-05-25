@@ -481,7 +481,8 @@ body {
 .personal-description-input,
 .experience-input,
 .personal-project-input,
-.education-input {
+.education-input,
+.personal-achievement-input {
   background-color: #dceeff;
   padding: 1rem;
   display: grid;
@@ -496,7 +497,7 @@ body {
     border-radius: 0.4rem;
   }
 
-  #description {
+  textarea {
     resize: vertical;
     grid-column: span 2;
   }
