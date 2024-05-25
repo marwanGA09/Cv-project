@@ -55,12 +55,27 @@ function SideBarCvContainerGroup() {
     to: { a0: '2023-03-27' },
   };
 
+  // *********
+  // *********
+  const initialPersonalAchievement = JSON.parse(
+    getLocalStorage('localPersonalAchievement')
+  ) || {
+    tittle: { a0: 'International Coding Competition' },
+    description: {
+      a0: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae, nostrum, fugit facere quo tenetur corriciis natus reiciendis',
+    },
+    year: { a0: '2022-07-02' },
+  };
+
   // USE STATE
   const [experienceData, setExperienceData] = useState(initialExperience);
   const [personalProject, setPersonalProject] = useState(
     initialPersonalProject
   );
   const [education, setEducation] = useState(initialEducation);
+  const [personalAchievement, setPersonalAchievement] = useState(
+    initialPersonalAchievement
+  );
 
   // *******
   function handlePersonalInformation(e) {
@@ -143,6 +158,33 @@ function SideBarCvContainerGroup() {
     });
   }
 
+  // *******
+  function handlePErsonalAchievement(e, ind) {
+    setPersonalAchievement((personalAchievement) => {
+      const temp = {
+        ...personalAchievement,
+        [e.target.name]: {
+          ...personalAchievement[e.target.name],
+          ['a' + ind]: e.target.value,
+        },
+      };
+      setLocalStorage(
+        'localPersonalAchievement',
+        JSON.stringify(personalAchievement)
+      );
+      return temp;
+    });
+  }
+
+  function handleRemovalPersonalAchievement(index) {
+    setPersonalAchievement((personalAchievement) => {
+      delete personalAchievement.tittle['a' + index];
+      delete personalAchievement.description['a' + index];
+      delete personalAchievement.year['a' + index];
+      return { ...personalAchievement };
+    });
+  }
+
   return (
     <>
       <SideBar
@@ -153,12 +195,15 @@ function SideBarCvContainerGroup() {
         onPersonalProjectDelete={handleRemovalOfPersonalProject}
         onEducationData={handleEducation}
         onEducationDelete={handleRemovalEducation}
+        onPersonalAchievement={handlePErsonalAchievement}
+        onPersonalAchievementDelete={handleRemovalPersonalAchievement}
       />
       <CvContainer
         personalInformation={personalInformation}
         experienceData={experienceData}
         personalProject={personalProject}
         educationData={education}
+        personalAchievement={personalAchievement}
       />
     </>
   );
@@ -180,6 +225,9 @@ function SideBar({
 
   onEducationData,
   onEducationDelete,
+
+  onPersonalAchievement,
+  onPersonalAchievementDelete,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -261,7 +309,10 @@ function SideBar({
         >
           {/* onPersonalAchievement,
   onPersonalAchievementDelete, */}
-          <PersonalAchievementInput />
+          <PersonalAchievementInput
+            onPersonalAchievement={onPersonalAchievement}
+            onPersonalAchievementDelete={onPersonalAchievementDelete}
+          />
         </Card>
         <Card
           id={'contact'}
@@ -356,6 +407,7 @@ function CvContainer({
   experienceData,
   personalProject,
   educationData,
+  personalAchievement,
 }) {
   return (
     <div className="cv-container">
@@ -365,6 +417,7 @@ function CvContainer({
         experienceData={experienceData}
         personalProject={personalProject}
         educationData={educationData}
+        personalAchievement={personalAchievement}
       />
     </div>
   );
@@ -420,6 +473,7 @@ function CV({
   experienceData,
   personalProject,
   educationData,
+  personalAchievement,
 }) {
   return (
     <div className="cv">
@@ -437,7 +491,7 @@ function CV({
             <Education educationData={educationData} />
           </CvCard>
           <CvCard heading={'Personal Achievement'}>
-            <PersonalAchievement />
+            <PersonalAchievement personalAchievement={personalAchievement} />
           </CvCard>
         </div>
         <div className="right">
@@ -814,24 +868,26 @@ function EducationInput({ onEducationData, onEducationDelete }) {
   );
 }
 
-function PersonalAchievement() {
+function PersonalAchievement({ personalAchievement }) {
   return (
-    <div className="achievement">
-      <h5>
-        Tittle: <span>International Coding Competition</span>
-      </h5>
-      <h6>
-        Description:
-        <span>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae,
-          nostrum, fugit facere quo tenetur corriciis natus reiciendis!
-        </span>
-      </h6>
-      <h6 className="date">
-        Year:
-        <span className="from">7/2022</span>
-      </h6>
-    </div>
+    <>
+      {' '}
+      {Object.keys(personalAchievement.tittle).map((key) => (
+        <div key={key} className="achievement">
+          <h5>
+            Tittle: <span>{personalAchievement.tittle[key] || ''}</span>
+          </h5>
+          <h6>
+            Description:
+            <span>{personalAchievement.description[key] || ''}</span>
+          </h6>
+          <h6 className="date">
+            Year:
+            <span className="from">{personalAchievement.year[key] || ''}</span>
+          </h6>
+        </div>
+      ))}
+    </>
   );
 }
 
@@ -844,7 +900,7 @@ function PersonalAchievementInput({
   );
 
   let number = personalAchievement
-    ? Object.keys(personalAchievement.program).length
+    ? Object.keys(personalAchievement.tittle).length
     : 1;
 
   const [addCount, setAddCount] = useState(number);
@@ -859,7 +915,7 @@ function PersonalAchievementInput({
               type="text"
               name="tittle"
               id="tittle"
-              placeholder={personalAchievement?.program['a' + index] || ''}
+              placeholder={personalAchievement?.tittle['a' + index] || ''}
               onChange={(e) => onPersonalAchievement(e, index)}
             />
 
@@ -868,16 +924,16 @@ function PersonalAchievementInput({
               type="text"
               name="description"
               id="description"
-              placeholder={personalAchievement?.level['a' + index] || ''}
+              placeholder={personalAchievement?.description['a' + index] || ''}
               onChange={(e) => onPersonalAchievement(e, index)}
             />
 
-            <label htmlFor="time">Year:</label>
+            <label htmlFor="year">Year:</label>
             <input
               type="date"
-              name="time"
-              id="time"
-              placeholder={personalAchievement?.from['a' + index] || ''}
+              name="year"
+              id="year"
+              placeholder={personalAchievement?.year['a' + index] || ''}
               onChange={(e) => onPersonalAchievement(e, index)}
             />
           </div>
