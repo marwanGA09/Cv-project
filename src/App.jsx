@@ -15,12 +15,6 @@ export default function App() {
 }
 // I created this to crease state inside app component
 function SideBarCvContainerGroup() {
-  const [personalInformation, setPersonalInformation] = useState({
-    fullName: 'Adem Kedir',
-    profession: 'Front end developer',
-    description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
-  });
-
   // *********
   // *********
   const initialExperience = JSON.parse(
@@ -66,8 +60,16 @@ function SideBarCvContainerGroup() {
     },
     year: { a0: '2022-07-02' },
   };
+  const initialSkills = JSON.parse(getLocalStorage('localSkills')) || {
+    skill: { a0: 'React', a1: 'Javascript', a2: 'Node' },
+  };
 
   // USE STATE
+  const [personalInformation, setPersonalInformation] = useState({
+    fullName: 'Adem Kedir',
+    profession: 'Front end developer',
+    description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
+  });
   const [experienceData, setExperienceData] = useState(initialExperience);
   const [personalProject, setPersonalProject] = useState(
     initialPersonalProject
@@ -82,6 +84,7 @@ function SideBarCvContainerGroup() {
     twitter: '....',
     linkedIn: '....',
   });
+  const [skills, setSkills] = useState(initialSkills);
   // *******
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -198,6 +201,27 @@ function SideBarCvContainerGroup() {
       };
     });
   }
+
+  function handleSkills(e, ind) {
+    setSkills((skills) => {
+      const temp = {
+        ...skills,
+        [e.target.name]: {
+          ...skills[e.target.name],
+          ['a' + ind]: e.target.value,
+        },
+      };
+      setLocalStorage('localSkills', JSON.stringify(skills));
+      return temp;
+    });
+  }
+
+  function handleRemovalOfSkill(index) {
+    setSkills((skills) => {
+      delete skills.skill['a' + index];
+      return { ...skills };
+    });
+  }
   return (
     <>
       <SideBar
@@ -211,6 +235,8 @@ function SideBarCvContainerGroup() {
         onPersonalAchievement={handlePErsonalAchievement}
         onPersonalAchievementDelete={handleRemovalPersonalAchievement}
         onSocialMedia={handleSocialMedia}
+        onSkills={handleSkills}
+        onSkillDelete={handleRemovalOfSkill}
       />
       <CvContainer
         personalInformation={personalInformation}
@@ -219,6 +245,7 @@ function SideBarCvContainerGroup() {
         educationData={education}
         personalAchievement={personalAchievement}
         socialMedia={socialMedia}
+        skills={skills}
       />
     </>
   );
@@ -245,6 +272,9 @@ function SideBar({
   onPersonalAchievementDelete,
 
   onSocialMedia,
+
+  onSkills,
+  onSkillDelete,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -349,7 +379,8 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          {/*onskill input  */}
+          <SkillSetInput onSkills={onSkills} onSkillDelete={onSkillDelete} />
         </Card>
         <Card
           id={'language'}
@@ -360,7 +391,7 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          <LanguageInput />
         </Card>
         <Card
           id={'interest'}
@@ -424,6 +455,7 @@ function CvContainer({
   educationData,
   personalAchievement,
   socialMedia,
+  skills,
 }) {
   return (
     <div className="cv-container">
@@ -435,6 +467,7 @@ function CvContainer({
         educationData={educationData}
         personalAchievement={personalAchievement}
         socialMedia={socialMedia}
+        skills={skills}
       />
     </div>
   );
@@ -492,6 +525,7 @@ function CV({
   educationData,
   personalAchievement,
   socialMedia,
+  skills,
 }) {
   return (
     <div className="cv">
@@ -517,7 +551,7 @@ function CV({
             <SocialMediaLinks socialMedia={socialMedia} />
           </CvCard>
           <CvCard heading={'Skill Set'}>
-            <SkillSet />
+            <SkillSet skills={skills} />
           </CvCard>
           <CvCard heading={'Language'}>
             <Language />
@@ -1033,32 +1067,54 @@ function SocialMediaInput({ onSocialMedia }) {
   );
 }
 
-function SkillSet() {
+function SkillSet({ skills }) {
   return (
-    <div className="skills">
-      <span>React</span>
-      <span>Javascript</span>
-      <span>Node</span>
-      <span>HTML</span>
-      <span>CSS</span>
-      <span>Tailwind</span>
-      <span>Bootstrap</span>
-      <span>Javascript</span>
-      <span>Node</span>
-      <span>HTML</span>
-      <span>CSS</span>
-      <span>Tailwind</span>
-      <span>Bootstrap</span>
-    </div>
+    <>
+      <div className="skills">
+        {Object.keys(skills.skill).map((key) => (
+          <span key={key}>{skills.skill[key]}</span>
+        ))}
+      </div>
+    </>
   );
 }
-function Interest() {
+
+function SkillSetInput({ onSkills, onSkillDelete }) {
+  const skills = JSON.parse(getLocalStorage('localSkills'));
+  let number = skills ? Object.keys(skills.skill).length : 3;
+  const [addCount, setAddCount] = useState(number);
   return (
-    <div className="interest">
-      <span className="interestItem">Searching for new technology</span>
-      <span className="interestItem">Movies</span>
-      <span className="interestItem">Reading Article</span>
-    </div>
+    <>
+      {Array.from({ length: addCount }, (_, index) => (
+        <div key={index}>
+          <div className="skill-input">
+            <label htmlFor="skill">Skill ({index + 1}):</label>
+            <input
+              type="text"
+              name="skill"
+              id="skill"
+              placeholder={skills?.skill['a' + index] || ''}
+              onChange={(e) => onSkills(e, index)}
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        className="del-btn"
+        onClick={() => {
+          addCount !== 3 && setAddCount((addCount) => addCount - 1);
+          addCount !== 3 && onSkillDelete(addCount - 1);
+        }}
+      >
+        🧹
+      </button>
+      <button
+        className="add-btn"
+        onClick={() => setAddCount((addCount) => addCount + 1)}
+      >
+        ✚
+      </button>
+    </>
   );
 }
 
