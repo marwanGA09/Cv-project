@@ -76,7 +76,12 @@ function SideBarCvContainerGroup() {
   const [personalAchievement, setPersonalAchievement] = useState(
     initialPersonalAchievement
   );
-
+  const [socialMedia, setSocialMedia] = useState({
+    phone: '+251 --- ---- ----',
+    email: '...@gmail.com',
+    twitter: '....',
+    linkedIn: '....',
+  });
   // *******
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -185,6 +190,14 @@ function SideBarCvContainerGroup() {
     });
   }
 
+  function handleSocialMedia(e) {
+    setSocialMedia((socialMedia) => {
+      return {
+        ...socialMedia,
+        [e.target.name]: e.target.value,
+      };
+    });
+  }
   return (
     <>
       <SideBar
@@ -197,6 +210,7 @@ function SideBarCvContainerGroup() {
         onEducationDelete={handleRemovalEducation}
         onPersonalAchievement={handlePErsonalAchievement}
         onPersonalAchievementDelete={handleRemovalPersonalAchievement}
+        onSocialMedia={handleSocialMedia}
       />
       <CvContainer
         personalInformation={personalInformation}
@@ -204,6 +218,7 @@ function SideBarCvContainerGroup() {
         personalProject={personalProject}
         educationData={education}
         personalAchievement={personalAchievement}
+        socialMedia={socialMedia}
       />
     </>
   );
@@ -228,6 +243,8 @@ function SideBar({
 
   onPersonalAchievement,
   onPersonalAchievementDelete,
+
+  onSocialMedia,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -307,8 +324,6 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          {/* onPersonalAchievement,
-  onPersonalAchievementDelete, */}
           <PersonalAchievementInput
             onPersonalAchievement={onPersonalAchievement}
             onPersonalAchievementDelete={onPersonalAchievementDelete}
@@ -323,7 +338,7 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          <SocialMediaInput onSocialMedia={onSocialMedia} />
         </Card>
         <Card
           id={'skill'}
@@ -408,6 +423,7 @@ function CvContainer({
   personalProject,
   educationData,
   personalAchievement,
+  socialMedia,
 }) {
   return (
     <div className="cv-container">
@@ -418,6 +434,7 @@ function CvContainer({
         personalProject={personalProject}
         educationData={educationData}
         personalAchievement={personalAchievement}
+        socialMedia={socialMedia}
       />
     </div>
   );
@@ -474,6 +491,7 @@ function CV({
   personalProject,
   educationData,
   personalAchievement,
+  socialMedia,
 }) {
   return (
     <div className="cv">
@@ -496,7 +514,7 @@ function CV({
         </div>
         <div className="right">
           <CvCard heading={'Contact'}>
-            <SocialMediaLinks />
+            <SocialMediaLinks socialMedia={socialMedia} />
           </CvCard>
           <CvCard heading={'Skill Set'}>
             <SkillSet />
@@ -691,9 +709,9 @@ function PersonalProject({ personalProject }) {
             description:
             <span>{personalProject.projectDescription[key] || ''}</span>
           </h6>
-          <a href="#" target="_black">
+          <a href={personalProject.projectURL[key] || ''} target="_black">
             <span>🐈</span>
-            {personalProject.projectURL[key] || ''}
+            Open
           </a>
         </div>
       ))}
@@ -766,7 +784,6 @@ function PersonalProjectInput({ onPersonalProject, onPersonalProjectDelete }) {
 }
 
 function Education({ educationData }) {
-  console.log(educationData);
   return (
     <>
       {Object.keys(educationData.program).map((key) => (
@@ -958,6 +975,64 @@ function PersonalAchievementInput({
   );
 }
 
+function SocialMediaLinks({ socialMedia }) {
+  return (
+    <ul className="social-media">
+      <li>
+        <span>📞</span>
+        <a href="#">{socialMedia.phone}</a>
+      </li>
+      <li>
+        <span>🖄</span>
+        <a href="#">{socialMedia.email}</a>
+      </li>
+      <li>
+        <span>🧩</span>
+        <a href="#">{socialMedia.linkedIn}</a>
+      </li>
+      <li>
+        <span>✖️</span>
+        <a href="#">{socialMedia.twitter}</a>
+      </li>
+    </ul>
+  );
+}
+
+function SocialMediaInput({ onSocialMedia }) {
+  return (
+    <div className="contact-link">
+      <label htmlFor="phone">Phone number:</label>
+      <input
+        type="tel"
+        name="phone"
+        onChange={(e) => onSocialMedia(e)}
+        id="phone"
+      />
+      <label htmlFor="email">Email:</label>
+      <input
+        type="email"
+        name="email"
+        onChange={(e) => onSocialMedia(e)}
+        id="email"
+      />
+      <label htmlFor="twitter">X/twitter user-name:</label>
+      <input
+        type="text"
+        name="twitter"
+        onChange={(e) => onSocialMedia(e)}
+        id="twitter"
+      />
+      <label htmlFor="linkedIn">LinkedIn user-name:</label>
+      <input
+        type="text"
+        name="linkedIn"
+        onChange={(e) => onSocialMedia(e)}
+        id="linkedIn"
+      />
+    </div>
+  );
+}
+
 function SkillSet() {
   return (
     <div className="skills">
@@ -1001,33 +1076,6 @@ function Language() {
       </li>
       <li>
         <span>Afan Oromo</span>:<span>Bilingual</span>
-      </li>
-    </ul>
-  );
-}
-
-function SocialMediaLinks() {
-  return (
-    <ul className="social-media">
-      <li>
-        <span>🖄</span>
-        <a href="#">Email</a>
-      </li>
-      <li>
-        <span>📞</span>
-        <a href="#">Phone</a>
-      </li>
-      <li>
-        <span>🧩</span>
-        <a href="#">LinkedIn</a>
-      </li>
-      <li>
-        <span>🐈</span>
-        <a href="#">Github</a>
-      </li>
-      <li>
-        <span>✖️</span>
-        <a href="#">Twitter</a>
       </li>
     </ul>
   );
