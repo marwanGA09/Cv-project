@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navigation from './assets/component/Navigation';
 import setLocalStorage, { getLocalStorage } from './setLocalStorage';
+import { compileString } from 'sass';
 
 export default function App() {
   return (
@@ -67,6 +68,9 @@ function SideBarCvContainerGroup() {
     languageName: { a0: 'English' },
     level: { a0: 'Professional' },
   };
+  const initialInterest = JSON.parse(getLocalStorage('localInterest')) || {
+    interest: { a0: 'Cinema' },
+  };
 
   // USE STATE
   const [personalInformation, setPersonalInformation] = useState({
@@ -90,6 +94,8 @@ function SideBarCvContainerGroup() {
   });
   const [skills, setSkills] = useState(initialSkills);
   const [language, setLanguage] = useState(initialLanguage);
+  const [interestList, setInterestList] = useState(initialInterest);
+  console.log('initial interest', interestList);
   // *******
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -231,20 +237,6 @@ function SideBarCvContainerGroup() {
   // *******
 
   function handleLanguage(e, ind) {
-    // console.log(e.target.dataset.set);
-    // console.log(ind);
-    // setLanguage(language => {
-    //   const temp = {
-    //     ...language,
-    //     [e.target.dataSet]:
-    //       ...language[e.target.dataSet],
-    //       ['a' + ind]: e.target.value,
-    //     },
-    //   };
-    //   setLocalStorage('localLanguage', JSON.stringify(language));
-    //   return temp;
-    // });
-
     setLanguage((language) => {
       const temp = {
         ...language,
@@ -265,6 +257,29 @@ function SideBarCvContainerGroup() {
       return { ...language };
     });
   }
+  // *******
+
+  function handleInterest(e, ind) {
+    console.log('e.taget', e.target);
+    setInterestList((interestList) => {
+      const temp = {
+        ...interestList,
+        [e.target.name]: {
+          ...interestList[e.target.name],
+          ['a' + ind]: e.target.value,
+        },
+      };
+      setLocalStorage('localInterest', JSON.stringify(interestList));
+      return temp;
+    });
+  }
+
+  function handleRemovalOfInterest(index) {
+    setInterestList((interestList) => {
+      delete interestList.interest['a' + index];
+      return { ...interestList };
+    });
+  }
   return (
     <>
       <SideBar
@@ -282,6 +297,8 @@ function SideBarCvContainerGroup() {
         onSkillDelete={handleRemovalOfSkill}
         onLanguage={handleLanguage}
         onLanguageDelete={handleRemovalOfLanguage}
+        onInterest={handleInterest}
+        OnInterestDelete={handleRemovalOfInterest}
       />
       <CvContainer
         personalInformation={personalInformation}
@@ -324,6 +341,9 @@ function SideBar({
 
   onLanguage,
   onLanguageDelete,
+
+  onInterest,
+  OnInterestDelete,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -455,7 +475,8 @@ function SideBar({
           }
         >
           <InterestInput
-          // onInterest={onInterest} OnInterestDelete={OnInterestDelete}
+            onInterest={onInterest}
+            OnInterestDelete={OnInterestDelete}
           />
         </Card>
       </div>
@@ -1176,7 +1197,6 @@ function SkillSetInput({ onSkills, onSkillDelete }) {
 }
 
 function Language({ language }) {
-  console.log(language);
   return (
     <>
       {' '}
@@ -1286,6 +1306,7 @@ function Interest() {
 
 function InterestInput({ onInterest, OnInterestDelete }) {
   const interestList = JSON.parse(getLocalStorage('localInterest'));
+  console.log('with in ipupt', interestList);
   let number = interestList ? Object.keys(interestList.interest).length : 1;
   const [addCount, setAddCount] = useState(number);
   return (
