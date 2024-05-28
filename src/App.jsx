@@ -454,7 +454,9 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <Test />
+          <InterestInput
+          // onInterest={onInterest} OnInterestDelete={OnInterestDelete}
+          />
         </Card>
       </div>
     </div>
@@ -1173,29 +1175,6 @@ function SkillSetInput({ onSkills, onSkillDelete }) {
   );
 }
 
-// function PersonalAchievement({ personalAchievement }) {
-//   return (
-//     <>
-//       {' '}
-//       {Object.keys(personalAchievement.tittle).map((key) => (
-//         <div key={key} className="achievement">
-//           <h5>
-//             Tittle: <span>{personalAchievement.tittle[key] || ''}</span>
-//           </h5>
-//           <h6>
-//             Description:
-//             <span>{personalAchievement.description[key] || ''}</span>
-//           </h6>
-//           <h6 className="date">
-//             Year:
-//             <span className="from">{personalAchievement.year[key] || ''}</span>
-//           </h6>
-//         </div>
-//       ))}
-//     </>
-//   );
-// }
-
 function Language({ language }) {
   console.log(language);
   return (
@@ -1211,15 +1190,6 @@ function Language({ language }) {
       </ul>
     </>
   );
-}
-
-{
-  /* <select name="proficiency" id="proficiency">
-  <option value="bilingual">Bilingual</option>
-  <option value="professional">Professional</option>
-  <option value="LimitedProfessional">Limited Professional</option>
-  <option value="conversational">Conversational</option>
-</select> */
 }
 
 function LanguageInput({ onLanguage, onLanguageDelete }) {
@@ -1311,5 +1281,44 @@ function Interest() {
       <span className="interestItem">Movies</span>
       <span className="interestItem">Reading Article</span>
     </div>
+  );
+}
+
+function InterestInput({ onInterest, OnInterestDelete }) {
+  const interestList = JSON.parse(getLocalStorage('localInterest'));
+  let number = interestList ? Object.keys(interestList.interest).length : 1;
+  const [addCount, setAddCount] = useState(number);
+  return (
+    <>
+      {Array.from({ length: addCount }, (_, index) => (
+        <div key={index}>
+          <div className="interest-input">
+            <label htmlFor="interest">interest ({index + 1}):</label>
+            <input
+              type="text"
+              name="interest"
+              id="interest"
+              placeholder={interestList?.interest['a' + index] || ''}
+              onChange={(e) => onInterest(e, index)}
+            />
+          </div>
+        </div>
+      ))}
+      <button
+        className="del-btn"
+        onClick={() => {
+          addCount !== 1 && setAddCount((addCount) => addCount - 1);
+          addCount !== 1 && OnInterestDelete(addCount - 1);
+        }}
+      >
+        🧹
+      </button>
+      <button
+        className="add-btn"
+        onClick={() => setAddCount((addCount) => addCount + 1)}
+      >
+        ✚
+      </button>
+    </>
   );
 }
