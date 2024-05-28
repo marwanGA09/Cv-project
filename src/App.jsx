@@ -63,6 +63,10 @@ function SideBarCvContainerGroup() {
   const initialSkills = JSON.parse(getLocalStorage('localSkills')) || {
     skill: { a0: 'React', a1: 'Javascript', a2: 'Node' },
   };
+  const initialLanguage = JSON.parse(getLocalStorage('localLanguage')) || {
+    languageName: { a0: 'English' },
+    level: { a0: 'Professional' },
+  };
 
   // USE STATE
   const [personalInformation, setPersonalInformation] = useState({
@@ -85,6 +89,7 @@ function SideBarCvContainerGroup() {
     linkedIn: '....',
   });
   const [skills, setSkills] = useState(initialSkills);
+  const [language, setLanguage] = useState(initialLanguage);
   // *******
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -192,7 +197,7 @@ function SideBarCvContainerGroup() {
       return { ...personalAchievement };
     });
   }
-
+  // *******
   function handleSocialMedia(e) {
     setSocialMedia((socialMedia) => {
       return {
@@ -201,7 +206,7 @@ function SideBarCvContainerGroup() {
       };
     });
   }
-
+  // *******
   function handleSkills(e, ind) {
     setSkills((skills) => {
       const temp = {
@@ -222,6 +227,44 @@ function SideBarCvContainerGroup() {
       return { ...skills };
     });
   }
+
+  // *******
+
+  function handleLanguage(e, ind) {
+    // console.log(e.target.dataset.set);
+    // console.log(ind);
+    // setLanguage(language => {
+    //   const temp = {
+    //     ...language,
+    //     [e.target.dataSet]:
+    //       ...language[e.target.dataSet],
+    //       ['a' + ind]: e.target.value,
+    //     },
+    //   };
+    //   setLocalStorage('localLanguage', JSON.stringify(language));
+    //   return temp;
+    // });
+
+    setLanguage((language) => {
+      const temp = {
+        ...language,
+        [e.target.dataset.set]: {
+          ...language[e.target.dataset.set],
+          ['a' + ind]: e.target.value,
+        },
+      };
+      setLocalStorage('localLanguage', JSON.stringify(language));
+      return temp;
+    });
+  }
+
+  function handleRemovalOfLanguage(index) {
+    setLanguage((language) => {
+      delete language.languageName['a' + index];
+      delete language.level['a' + index];
+      return { ...language };
+    });
+  }
   return (
     <>
       <SideBar
@@ -237,6 +280,8 @@ function SideBarCvContainerGroup() {
         onSocialMedia={handleSocialMedia}
         onSkills={handleSkills}
         onSkillDelete={handleRemovalOfSkill}
+        onLanguage={handleLanguage}
+        onLanguageDelete={handleRemovalOfLanguage}
       />
       <CvContainer
         personalInformation={personalInformation}
@@ -246,6 +291,7 @@ function SideBarCvContainerGroup() {
         personalAchievement={personalAchievement}
         socialMedia={socialMedia}
         skills={skills}
+        language={language}
       />
     </>
   );
@@ -275,6 +321,9 @@ function SideBar({
 
   onSkills,
   onSkillDelete,
+
+  onLanguage,
+  onLanguageDelete,
 }) {
   const [currentActive, setCurrentActive] = useState(null);
   return (
@@ -391,7 +440,10 @@ function SideBar({
             'correct personal information is essential part. correctly fill you personal information'
           }
         >
-          <LanguageInput />
+          <LanguageInput
+            onLanguage={onLanguage}
+            onLanguageDelete={onLanguageDelete}
+          />
         </Card>
         <Card
           id={'interest'}
@@ -456,6 +508,7 @@ function CvContainer({
   personalAchievement,
   socialMedia,
   skills,
+  language,
 }) {
   return (
     <div className="cv-container">
@@ -468,6 +521,7 @@ function CvContainer({
         personalAchievement={personalAchievement}
         socialMedia={socialMedia}
         skills={skills}
+        language={language}
       />
     </div>
   );
@@ -526,6 +580,7 @@ function CV({
   personalAchievement,
   socialMedia,
   skills,
+  language,
 }) {
   return (
     <div className="cv">
@@ -554,7 +609,7 @@ function CV({
             <SkillSet skills={skills} />
           </CvCard>
           <CvCard heading={'Language'}>
-            <Language />
+            <Language language={language} />
           </CvCard>
           <CvCard heading={'Interest/ Hobbies'}>
             <Interest />
@@ -1118,21 +1173,143 @@ function SkillSetInput({ onSkills, onSkillDelete }) {
   );
 }
 
-function Language() {
+// function PersonalAchievement({ personalAchievement }) {
+//   return (
+//     <>
+//       {' '}
+//       {Object.keys(personalAchievement.tittle).map((key) => (
+//         <div key={key} className="achievement">
+//           <h5>
+//             Tittle: <span>{personalAchievement.tittle[key] || ''}</span>
+//           </h5>
+//           <h6>
+//             Description:
+//             <span>{personalAchievement.description[key] || ''}</span>
+//           </h6>
+//           <h6 className="date">
+//             Year:
+//             <span className="from">{personalAchievement.year[key] || ''}</span>
+//           </h6>
+//         </div>
+//       ))}
+//     </>
+//   );
+// }
+
+function Language({ language }) {
+  console.log(language);
   return (
-    <ul className="languages">
-      <li>
-        <span>English</span>:<span>Professional</span>
-      </li>
-      <li>
-        <span>French</span>:<span>Limited professional</span>
-      </li>
-      <li>
-        <span>Amharic</span>:<span>Bilingual</span>
-      </li>
-      <li>
-        <span>Afan Oromo</span>:<span>Bilingual</span>
-      </li>
-    </ul>
+    <>
+      {' '}
+      <ul className="languages">
+        {Object.keys(language.languageName).map((key) => (
+          <li key={key}>
+            <span>{language.languageName[key]}</span>:
+            <span>{language.level[key] || 'Professional'}</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+{
+  /* <select name="proficiency" id="proficiency">
+  <option value="bilingual">Bilingual</option>
+  <option value="professional">Professional</option>
+  <option value="LimitedProfessional">Limited Professional</option>
+  <option value="conversational">Conversational</option>
+</select> */
+}
+
+function LanguageInput({ onLanguage, onLanguageDelete }) {
+  const languageList = JSON.parse(getLocalStorage('localLanguage'));
+  let number = languageList ? Object.keys(languageList.languageName).length : 1;
+  const [addCount, setAddCount] = useState(number);
+  return (
+    <>
+      {Array.from({ length: addCount }, (_, index) => (
+        <div key={index}>
+          <div className="language-input">
+            <label htmlFor="languageName">Language:</label>
+            <input
+              type="text"
+              name="languageName"
+              data-set="languageName"
+              id="languageName"
+              placeholder={languageList?.languageName['a' + index] || ''}
+              onChange={(e) => onLanguage(e, index)}
+            />
+            <div className="radio-btn">
+              <input
+                type="radio"
+                name={`level${index}`}
+                data-set={'level'}
+                value="Bilingual"
+                id={`Bilingual${index}`}
+                onChange={(e) => onLanguage(e, index)}
+              />
+              <label htmlFor={`Bilingual${index}`}> Bilingual</label>
+              <input
+                type="radio"
+                name={`level${index}`}
+                data-set={'level'}
+                value="Professional"
+                id={`Professional${index}`}
+                onChange={(e) => onLanguage(e, index)}
+                checked
+              />
+              <label htmlFor={`Professional${index}`}> Professional</label>
+              <input
+                type="radio"
+                name={`level${index}`}
+                data-set={'level'}
+                value="Limited Professional"
+                id={`LimitedProfessional${index}`}
+                onChange={(e) => onLanguage(e, index)}
+              />
+              <label htmlFor={`LimitedProfessional${index}`}>
+                {' '}
+                Limited Professional
+              </label>
+              <input
+                type="radio"
+                name={`level${index}`}
+                data-set={'level'}
+                value="conversation"
+                id={`Conversation${index}`}
+                onChange={(e) => onLanguage(e, index)}
+              />
+              <label htmlFor={`Conversation${index}`}> Conversational</label>
+            </div>{' '}
+          </div>
+        </div>
+      ))}
+      <button
+        className="del-btn"
+        onClick={() => {
+          addCount !== 1 && setAddCount((addCount) => addCount - 1);
+          addCount !== 1 && onLanguageDelete(addCount - 1);
+        }}
+      >
+        🧹
+      </button>
+      <button
+        className="add-btn"
+        onClick={() => setAddCount((addCount) => addCount + 1)}
+      >
+        ✚
+      </button>
+    </>
+  );
+}
+
+function Interest() {
+  return (
+    <div className="interest">
+      <span className="interestItem">Searching for new technology</span>
+      <span className="interestItem">Movies</span>
+      <span className="interestItem">Reading Article</span>
+    </div>
   );
 }
