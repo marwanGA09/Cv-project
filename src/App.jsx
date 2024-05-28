@@ -6,6 +6,8 @@ import { compileString } from 'sass';
 export default function App() {
   return (
     <>
+      {' '}
+      {localStorage.clear()}
       <div className="App">
         <Navigation />
         <SideBarCvContainerGroup />
@@ -586,7 +588,6 @@ function TopCvContainer({ children, personalInformation }) {
   return (
     <div className="top">
       <p>User: @{personalInformation.fullName.split(' ')[0]}</p>
-      <button onClick={() => localStorage.clear()}>clear Local</button>
       <div>
         <label htmlFor="font">
           Font-style:
