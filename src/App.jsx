@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Navigation from './assets/component/Navigation';
 import setLocalStorage, { getLocalStorage } from './setLocalStorage';
-import { compileString } from 'sass';
 
 export default function App() {
   return (
@@ -554,11 +553,18 @@ function CvContainer({
   language,
   interestList,
 }) {
-  const [style, setStyle] = useState({});
+  const [userStyle, setUserStyle] = useState({
+    fontFamily: 'sans-serif',
+    backgroundColor: '#0349a5f7',
+  });
   return (
     <div className="cv-container">
-      <TopCvContainer personalInformation={personalInformation} />
+      <TopCvContainer
+        personalInformation={personalInformation}
+        onStyle={setUserStyle}
+      />
       <CV
+        userStyle={userStyle}
         personalInformation={personalInformation}
         uploadedImage={uploadedImage}
         experienceData={experienceData}
@@ -584,23 +590,40 @@ function Footer({ children }) {
   );
 }
 
-function TopCvContainer({ children, personalInformation }) {
+function TopCvContainer({ children, personalInformation, onStyle }) {
   return (
     <div className="top">
       <p>User: @{personalInformation.fullName.split(' ')[0]}</p>
       <div>
         <label htmlFor="font">
           Font-style:
-          <select name="font" id="font">
-            <option value="ar">Arial</option>
-            <option value="he">helvetic</option>
-            <option value="mn">mono</option>
-            <option value="ss">sans-serif</option>
+          <select
+            name="font"
+            id="font"
+            onChange={(e) =>
+              onStyle((style) => {
+                return { ...style, fontFamily: e.target.value };
+              })
+            }
+          >
+            <option value="Arial">Arial</option>
+            <option value="Helvetica">helvetic</option>
+            <option value="monospace">mono</option>
+            <option value="sans-serif">sans-serif</option>
           </select>
         </label>
         <label htmlFor="color">
           <span>Primary color: </span>
-          <input type="color" name="color" id="color" />
+          <input
+            type="color"
+            name="color"
+            id="color"
+            onChange={(e) =>
+              onStyle((style) => {
+                return { ...style, backgroundColor: e.target.value };
+              })
+            }
+          />
         </label>
       </div>
     </div>
@@ -619,6 +642,7 @@ function CvCard({ heading, children }) {
 
 function CV({
   children,
+  userStyle,
   personalInformation,
   uploadedImage,
   experienceData,
@@ -631,10 +655,11 @@ function CV({
   interestList,
 }) {
   return (
-    <div className="cv">
+    <div className="cv" style={{ fontFamily: userStyle.fontFamily }}>
       <PersonalInformation
         personalInformation={personalInformation}
         uploadedImage={uploadedImage}
+        userStyle={userStyle}
       />
       <div className="cv__main">
         <div className="left">
@@ -712,20 +737,29 @@ function PersonalInformationInput({ onPersonalInfoChange, onImageUpLoad }) {
   );
 }
 
-function PersonalInformation({ children, personalInformation, uploadedImage }) {
+function PersonalInformation({
+  children,
+  personalInformation,
+  uploadedImage,
+  userStyle,
+}) {
   return (
     <div className="cv__personal-information">
-      <div className="personal-description">
+      <div
+        className="personal-description"
+        style={{ backgroundColor: userStyle.backgroundColor }}
+      >
         <h2>{personalInformation.fullName}</h2>
         <h4>{personalInformation.profession}</h4>
         <p>{personalInformation.description}</p>
       </div>
-      <div className="image">
+      <div
+        className="image"
+        style={{ backgroundColor: userStyle.backgroundColor }}
+      >
         <div>
           <img
-            // {uploadedImage?}
             src={uploadedImage ? uploadedImage : 'public/default.jpg'}
-            // src="public/default.jpg"
             alt="user's image"
           />
         </div>
