@@ -77,7 +77,6 @@ function SideBarCvContainerGroup() {
     fullName: 'Adem Kedir',
     profession: 'Front end developer',
     description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
-    image: '/home/ademk/Downloads/Telegram Desktop/96.jpg',
   });
   const [experienceData, setExperienceData] = useState(initialExperience);
   const [personalProject, setPersonalProject] = useState(
@@ -279,10 +278,25 @@ function SideBarCvContainerGroup() {
       return { ...interestList };
     });
   }
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  function handleUploadedImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   return (
     <>
       <SideBar
         onPersonalInfoChange={handlePersonalInformation}
+        onImageUpLoad={handleUploadedImage}
         onExperienceInput={handleExperienceInfo}
         onExperienceDelete={handleRemovalOfExperience}
         onPersonalProject={handlePersonalProject}
@@ -301,6 +315,7 @@ function SideBarCvContainerGroup() {
       />
       <CvContainer
         personalInformation={personalInformation}
+        uploadedImage={selectedImage}
         experienceData={experienceData}
         personalProject={personalProject}
         educationData={education}
@@ -321,6 +336,7 @@ function Test() {
 function SideBar({
   children,
   onPersonalInfoChange,
+  onImageUpLoad,
 
   onExperienceInput,
   onExperienceDelete,
@@ -368,6 +384,7 @@ function SideBar({
         >
           <PersonalInformationInput
             onPersonalInfoChange={onPersonalInfoChange}
+            onImageUpLoad={onImageUpLoad}
           />
         </Card>
         <Card
@@ -525,6 +542,7 @@ function Card({
 function CvContainer({
   children,
   personalInformation,
+  uploadedImage,
   experienceData,
   personalProject,
   educationData,
@@ -534,11 +552,13 @@ function CvContainer({
   language,
   interestList,
 }) {
+  const [style, setStyle] = useState({});
   return (
     <div className="cv-container">
       <TopCvContainer personalInformation={personalInformation} />
       <CV
         personalInformation={personalInformation}
+        uploadedImage={uploadedImage}
         experienceData={experienceData}
         personalProject={personalProject}
         educationData={educationData}
@@ -599,6 +619,7 @@ function CvCard({ heading, children }) {
 function CV({
   children,
   personalInformation,
+  uploadedImage,
   experienceData,
   personalProject,
   educationData,
@@ -610,7 +631,10 @@ function CV({
 }) {
   return (
     <div className="cv">
-      <PersonalInformation personalInformation={personalInformation} />
+      <PersonalInformation
+        personalInformation={personalInformation}
+        uploadedImage={uploadedImage}
+      />
       <div className="cv__main">
         <div className="left">
           <CvCard heading={'Experience'}>
@@ -646,7 +670,7 @@ function CV({
   );
 }
 
-function PersonalInformationInput({ onPersonalInfoChange }) {
+function PersonalInformationInput({ onPersonalInfoChange, onImageUpLoad }) {
   return (
     <div className="personal-description-input">
       <label htmlFor="full-name">Full name:</label>
@@ -681,14 +705,13 @@ function PersonalInformationInput({ onPersonalInfoChange }) {
         type="file"
         name="image"
         id="image"
-        onChange={(e) => console.log(e)}
+        onChange={(e) => onImageUpLoad(e)}
       />
     </div>
   );
 }
 
-function PersonalInformation({ children, personalInformation }) {
-  console.log(personalInformation.image);
+function PersonalInformation({ children, personalInformation, uploadedImage }) {
   return (
     <div className="cv__personal-information">
       <div className="personal-description">
@@ -699,7 +722,8 @@ function PersonalInformation({ children, personalInformation }) {
       <div className="image">
         <div>
           <img
-            src={personalInformation.image}
+            // {uploadedImage?}
+            src={uploadedImage ? uploadedImage : 'public/default.jpg'}
             // src="public/default.jpg"
             alt="user's image"
           />
