@@ -11,7 +11,6 @@ import {
 import {
   faArrowDown,
   faArrowUp,
-  faClose,
   faEnvelope,
   faPhone,
 } from '@fortawesome/free-solid-svg-icons';
@@ -49,8 +48,10 @@ function SideBarCvContainerGroup() {
     getLocalStorage('localPersonalProject')
   ) || {
     projectName: { a0: 'CV project creator' },
-    projectDescription: { a0: 'Create cv dynamically' },
-    projectURL: { a0: 'https//:' },
+    projectDescription: {
+      a0: 'This project allows users to dynamically create their CVs through a user-friendly interface. It focuses on providing a streamlined experience for building and customizing CV content.',
+    },
+    projectURL: { a0: 'https://your-cv-project-link.com' },
   };
 
   // *********
@@ -91,7 +92,7 @@ function SideBarCvContainerGroup() {
   const [personalInformation, setPersonalInformation] = useState({
     fullName: 'Adem Kedir',
     profession: 'Front end developer',
-    description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
+    description: `Front-End Engineer passionate about building user-friendly interfaces with React & modern frameworks. Experienced in crafting interactive & performant web apps that delight users.`,
   });
   const [experienceData, setExperienceData] = useState(initialExperience);
   const [personalProject, setPersonalProject] = useState(
@@ -407,9 +408,7 @@ function SideBar({
           tittle={'Experience'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`List your professional experiences here. Include company names, job titles, dates of employment, and key responsibilities or accomplishments.`}
         >
           <ExperienceInput
             onExperienceInput={onExperienceInput}
@@ -421,9 +420,7 @@ function SideBar({
           tittle={'Personal Project'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`Highlight your personal projects here. Showcase your skills, creativity, and problem-solving abilities. Briefly describe each project, including its purpose, technologies used, and any achievements.`}
         >
           {/* personalProject, onPersonalProject, onPersonalProjectDelete, */}
           <PersonalProjectInput
@@ -436,9 +433,7 @@ function SideBar({
           tittle={'Education Level'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`List your educational background here. Include the names of institutions, degrees earned, majors or specializations, and graduation dates.`}
         >
           {/*  onEducationData, onEducationDelete  */}
           <EducationInput
@@ -451,9 +446,7 @@ function SideBar({
           tittle={'Personal Achievement'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`Highlight your accomplishments and accolades here. Showcase your skills, dedication, and any significant achievements that go beyond formal education.`}
         >
           <PersonalAchievementInput
             onPersonalAchievement={onPersonalAchievement}
@@ -465,9 +458,7 @@ function SideBar({
           tittle={'Contact'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`Provide your preferred methods of contact here. This could include email address, phone number, professional social media profiles (e.g., LinkedIn, GitHub).`}
         >
           <SocialMediaInput onSocialMedia={onSocialMedia} />
         </Card>
@@ -476,9 +467,7 @@ function SideBar({
           tittle={'Skill Set'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`Highlight your technical and soft skills here. Categorize and list your skills, and optionally indicate proficiency levels.`}
         >
           {/*onskill input  */}
           <SkillSetInput onSkills={onSkills} onSkillDelete={onSkillDelete} />
@@ -488,9 +477,7 @@ function SideBar({
           tittle={'Language'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`ist the languages you speak and your proficiency level in each. This information can be valuable for employers seeking multilingual candidates.`}
         >
           <LanguageInput
             onLanguage={onLanguage}
@@ -502,9 +489,7 @@ function SideBar({
           tittle={'Interest/ Hobbies'}
           currentActive={currentActive}
           onCurrentActive={setCurrentActive}
-          description={
-            'correct personal information is essential part. correctly fill you personal information'
-          }
+          description={`Share your interests and hobbies here. This can help potential employers get a better sense of you as a person and your well-roundedness.`}
         >
           <InterestInput
             onInterest={onInterest}
