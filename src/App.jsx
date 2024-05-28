@@ -309,6 +309,7 @@ function SideBarCvContainerGroup() {
         socialMedia={socialMedia}
         skills={skills}
         language={language}
+        interestList={interestList}
       />
     </>
   );
@@ -532,6 +533,7 @@ function CvContainer({
   socialMedia,
   skills,
   language,
+  interestList,
 }) {
   return (
     <div className="cv-container">
@@ -545,6 +547,7 @@ function CvContainer({
         socialMedia={socialMedia}
         skills={skills}
         language={language}
+        interestList={interestList}
       />
     </div>
   );
@@ -604,6 +607,7 @@ function CV({
   socialMedia,
   skills,
   language,
+  interestList,
 }) {
   return (
     <div className="cv">
@@ -635,7 +639,7 @@ function CV({
             <Language language={language} />
           </CvCard>
           <CvCard heading={'Interest/ Hobbies'}>
-            <Interest />
+            <Interest interestList={interestList} />
           </CvCard>
         </div>
       </div>
@@ -1294,12 +1298,15 @@ function LanguageInput({ onLanguage, onLanguageDelete }) {
   );
 }
 
-function Interest() {
+function Interest({ interestList }) {
   return (
     <div className="interest">
-      <span className="interestItem">Searching for new technology</span>
-      <span className="interestItem">Movies</span>
-      <span className="interestItem">Reading Article</span>
+      {' '}
+      {Object.keys(interestList.interest).map((key) => (
+        <span key={key} className="interestItem">
+          {interestList.interest[key] || '...'}
+        </span>
+      ))}
     </div>
   );
 }
