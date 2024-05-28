@@ -2,6 +2,20 @@ import { useState } from 'react';
 import Navigation from './assets/component/Navigation';
 import setLocalStorage, { getLocalStorage } from './setLocalStorage';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faGithub,
+  faLinkedin,
+  faXTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+import {
+  faArrowDown,
+  faArrowUp,
+  faClose,
+  faEnvelope,
+  faPhone,
+} from '@fortawesome/free-solid-svg-icons';
+
 export default function App() {
   return (
     <>
@@ -533,7 +547,21 @@ function Card({
       >
         {isCurrent ? 'Close' : 'Open'}
         <span className={`${isCurrent ? 'open' : 'close'}`}>
-          {isCurrent ? '⏫' : '⏬'}
+          {isCurrent ? (
+            <FontAwesomeIcon
+              icon={faArrowUp}
+              size="sm"
+              color="gray"
+              style={{ marginLeft: '1rem' }}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faArrowDown}
+              size="sm"
+              color="gray"
+              style={{ marginLeft: '1rem' }}
+            />
+          )}
         </span>
       </button>
     </div>
@@ -561,6 +589,7 @@ function CvContainer({
     <div className="cv-container">
       <TopCvContainer
         personalInformation={personalInformation}
+        userStyle={userStyle}
         onStyle={setUserStyle}
       />
       <CV
@@ -584,13 +613,24 @@ function Footer({ children }) {
     <div className="footer">
       <p>Developed by Adem Kedir </p>
       <div>
-        <a href="#">🐈</a> <a href="#">🧩</a> <a href="#">🐦</a>
+        <a href="#">
+          {' '}
+          <FontAwesomeIcon icon={faGithub} size="lg" color="gray" />
+        </a>{' '}
+        <a href="#">
+          {' '}
+          <FontAwesomeIcon icon={faLinkedin} size="lg" color="gray" />
+        </a>{' '}
+        <a href="#">
+          {' '}
+          <FontAwesomeIcon icon={faXTwitter} size="lg" color="gray" />
+        </a>
       </div>
     </div>
   );
 }
 
-function TopCvContainer({ children, personalInformation, onStyle }) {
+function TopCvContainer({ children, personalInformation, userStyle, onStyle }) {
   return (
     <div className="top">
       <p>User: @{personalInformation.fullName.split(' ')[0]}</p>
@@ -731,6 +771,7 @@ function PersonalInformationInput({ onPersonalInfoChange, onImageUpLoad }) {
         type="file"
         name="image"
         id="image"
+        accept="image/*"
         onChange={(e) => onImageUpLoad(e)}
       />
     </div>
@@ -896,7 +937,9 @@ function PersonalProject({ personalProject }) {
             <span>{personalProject.projectDescription[key] || ''}</span>
           </h6>
           <a href={personalProject.projectURL[key] || ''} target="_black">
-            <span>🐈</span>
+            <span style={{ marginRight: '1rem' }}>
+              <FontAwesomeIcon icon={faGithub} size="sm" color="gray" />
+            </span>
             Open
           </a>
         </div>
@@ -1165,19 +1208,28 @@ function SocialMediaLinks({ socialMedia }) {
   return (
     <ul className="social-media">
       <li>
-        <span>📞</span>
+        <span>
+          {' '}
+          <FontAwesomeIcon icon={faPhone} size="sm" color="gray" />
+        </span>
         <a href="#">{socialMedia.phone}</a>
       </li>
       <li>
-        <span>🖄</span>
+        <span>
+          <FontAwesomeIcon icon={faEnvelope} size="sm" color="gray" />
+        </span>
         <a href="#">{socialMedia.email}</a>
       </li>
       <li>
-        <span>🧩</span>
+        <span>
+          <FontAwesomeIcon icon={faLinkedin} size="sm" color="gray" />
+        </span>
         <a href="#">{socialMedia.linkedIn}</a>
       </li>
       <li>
-        <span>✖️</span>
+        <span>
+          <FontAwesomeIcon icon={faXTwitter} size="sm" color="gray" />
+        </span>
         <a href="#">{socialMedia.twitter}</a>
       </li>
     </ul>

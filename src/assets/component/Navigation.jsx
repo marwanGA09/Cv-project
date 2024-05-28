@@ -1,3 +1,10 @@
+import {
+  faGithub,
+  faLinkedin,
+  faXTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 export default function Navigation() {
   return (
     <div className="navigation">
@@ -7,7 +14,17 @@ export default function Navigation() {
       <div>
         Contact me
         <div>
-          <a href="#">🐈</a> <a href="#">🧩</a> <a href="#">🐦</a>
+          <a href="#">
+            <FontAwesomeIcon icon={faGithub} size="sm" color="gray" />
+          </a>{' '}
+          <a href="#">
+            {' '}
+            <FontAwesomeIcon icon={faLinkedin} size="sm" color="gray" />
+          </a>{' '}
+          <a href="#">
+            {' '}
+            <FontAwesomeIcon icon={faXTwitter} size="sm" color="gray" />
+          </a>
           <span>Merwan KG</span>
         </div>
       </div>
