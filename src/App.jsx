@@ -77,6 +77,7 @@ function SideBarCvContainerGroup() {
     fullName: 'Adem Kedir',
     profession: 'Front end developer',
     description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae amet fuga minima corrupti maiores tempore exercitationem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae `,
+    image: '/home/ademk/Downloads/Telegram Desktop/96.jpg',
   });
   const [experienceData, setExperienceData] = useState(initialExperience);
   const [personalProject, setPersonalProject] = useState(
@@ -95,7 +96,6 @@ function SideBarCvContainerGroup() {
   const [skills, setSkills] = useState(initialSkills);
   const [language, setLanguage] = useState(initialLanguage);
   const [interestList, setInterestList] = useState(initialInterest);
-  console.log('initial interest', interestList);
   // *******
   function handlePersonalInformation(e) {
     setPersonalInformation((personalInformation) => {
@@ -260,7 +260,6 @@ function SideBarCvContainerGroup() {
   // *******
 
   function handleInterest(e, ind) {
-    console.log('e.taget', e.target);
     setInterestList((interestList) => {
       const temp = {
         ...interestList,
@@ -537,7 +536,7 @@ function CvContainer({
 }) {
   return (
     <div className="cv-container">
-      <TopCvContainer />
+      <TopCvContainer personalInformation={personalInformation} />
       <CV
         personalInformation={personalInformation}
         experienceData={experienceData}
@@ -563,10 +562,10 @@ function Footer({ children }) {
   );
 }
 
-function TopCvContainer({ children }) {
+function TopCvContainer({ children, personalInformation }) {
   return (
     <div className="top">
-      <p>Name: merwan</p>
+      <p>User: @{personalInformation.fullName.split(' ')[0]}</p>
       <button onClick={() => localStorage.clear()}>clear Local</button>
       <div>
         <label htmlFor="font">
@@ -677,11 +676,19 @@ function PersonalInformationInput({ onPersonalInfoChange }) {
         // value={personalInformation.description}
         onChange={(e) => onPersonalInfoChange(e)}
       ></textarea>
+      <label htmlFor="image">Profile Picture</label>{' '}
+      <input
+        type="file"
+        name="image"
+        id="image"
+        onChange={(e) => console.log(e)}
+      />
     </div>
   );
 }
 
 function PersonalInformation({ children, personalInformation }) {
+  console.log(personalInformation.image);
   return (
     <div className="cv__personal-information">
       <div className="personal-description">
@@ -691,7 +698,11 @@ function PersonalInformation({ children, personalInformation }) {
       </div>
       <div className="image">
         <div>
-          <img src="./../public/default.jpg" alt="user's image" />
+          <img
+            src={personalInformation.image}
+            // src="public/default.jpg"
+            alt="user's image"
+          />
         </div>
       </div>
     </div>
@@ -1313,7 +1324,6 @@ function Interest({ interestList }) {
 
 function InterestInput({ onInterest, OnInterestDelete }) {
   const interestList = JSON.parse(getLocalStorage('localInterest'));
-  console.log('with in ipupt', interestList);
   let number = interestList ? Object.keys(interestList.interest).length : 1;
   const [addCount, setAddCount] = useState(number);
   return (
