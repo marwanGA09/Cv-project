@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { getLocalStorage } from '../../setLocalStorage';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function SkillSet({ skills }) {
   return (
@@ -39,13 +41,13 @@ export function SkillSetInput({ onSkills, onSkillDelete }) {
           addCount !== 3 && onSkillDelete(addCount - 1);
         }}
       >
-        🧹
+        <FontAwesomeIcon icon={faTrash} size="sm" color="#333" />
       </button>
       <button
         className="add-btn"
         onClick={() => setAddCount((addCount) => addCount + 1)}
       >
-        ✚
+        <FontAwesomeIcon icon={faPlus} size="sm" color="#333" />
       </button>
     </>
   );

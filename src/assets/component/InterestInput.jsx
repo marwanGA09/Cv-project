@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { getLocalStorage } from '../../setLocalStorage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export function Interest({ interestList }) {
   return (
@@ -40,13 +42,13 @@ export function InterestInput({ onInterest, OnInterestDelete }) {
           addCount !== 1 && OnInterestDelete(addCount - 1);
         }}
       >
-        🧹
+        <FontAwesomeIcon icon={faTrash} size="sm" color="#333" />
       </button>
       <button
         className="add-btn"
         onClick={() => setAddCount((addCount) => addCount + 1)}
       >
-        ✚
+        <FontAwesomeIcon icon={faPlus} size="sm" color="#333" />
       </button>
     </>
   );

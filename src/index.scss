@@ -29,6 +29,7 @@ body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 1.6rem;
   color: rgb(55, 55, 55);
+  background-color: #f0f8ff;
 }
 
 .App {
@@ -178,15 +179,21 @@ body {
   .del-btn,
   .add-btn {
     padding: 0.4rem 3rem;
-
     margin: 0.3rem;
   }
 
   .del-btn {
-    background-color: rgb(160, 35, 35);
+    background-color: rgb(252, 226, 226);
 
     &:hover {
-      background-color: rgb(160, 35, 35, 0.8);
+      background-color: rgb(253, 209, 209);
+    }
+  }
+  .add-btn {
+    background-color: rgb(208, 248, 208);
+
+    &:hover {
+      background-color: rgb(167, 254, 167);
     }
   }
 
@@ -446,6 +453,7 @@ body {
 
 .footer {
   box-shadow: 0 -1px 1px 0 #dceeff;
+  padding-top: 2rem;
   @include flex();
   justify-content: end;
   gap: 3rem;

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { getLocalStorage } from '../../setLocalStorage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export function PersonalProject({ personalProject }) {
   return (
@@ -81,13 +82,13 @@ export function PersonalProjectInput({
           addCount !== 1 && onPersonalProjectDelete(addCount - 1);
         }}
       >
-        🧹
+        <FontAwesomeIcon icon={faTrash} size="sm" color="#333" />
       </button>
       <button
         className="add-btn"
         onClick={() => setAddCount((addCount) => addCount + 1)}
       >
-        ✚
+        <FontAwesomeIcon icon={faPlus} size="sm" color="#333" />
       </button>
     </>
   );
