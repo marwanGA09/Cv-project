@@ -78,10 +78,10 @@ export function SideBarCvContainerGroup() {
     initialPersonalAchievement
   );
   const [socialMedia, setSocialMedia] = useState({
-    phone: '+251 --- ---- ----',
-    email: '...@gmail.com',
-    twitter: '....',
-    linkedIn: '....',
+    phone: '+251 924 554506',
+    email: 'ademkedir724@gmail.com',
+    twitter: '@adem_kedir_g',
+    linkedIn: 'adem kedir',
   });
   const [skills, setSkills] = useState(initialSkills);
   const [language, setLanguage] = useState(initialLanguage);
