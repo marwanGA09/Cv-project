@@ -382,10 +382,15 @@ function SideBar({
     <div className="side-bar">
       <div className="general-page-description">
         <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque natus
-          quos eos dicta fugiat laboriosam aliquid amet quisquam magnam ex!
-          Officia illum velit aperiam explicabo nesciunt aspernatur ad laborum
-          perferendis
+          A CV is a document that outlines an individual&apos;s work experience,
+          education, skills, and accomplishments, and is typically used for job
+          applications. It is a summary of an individual&apos;s qualifications
+          and experience, and is usually one or two pages in length. A resume
+          should be well-organized, easy to read, and free of errors. It is
+          important to tailor a resume to each job application, highlighting the
+          most relevant skills and experiences for the position. A resume should
+          also be up-to-date, adding new skills, experiences, and
+          accomplishments as they are gained.
         </p>
       </div>
       <div className="cards">
