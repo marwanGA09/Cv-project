@@ -790,7 +790,7 @@ function PersonalInformation({
       >
         <div>
           <img
-            src={uploadedImage ? uploadedImage : '/dist/default.jpg'}
+            src={uploadedImage ? uploadedImage : '/../public/default.jpg'}
             alt="user's image"
           />
         </div>
